@@ -10,8 +10,8 @@ The project is in the **Development** stage.
 
 This project started at UFBA master's degree course, with the subject **Distributed Systems Topics**. So I created two branches. One for the final project (master branch), and another one for the subject milestones (milestones branch).
 
-- ([Master branch](https://github.com/Levysantiago/blockchain_data_tracking_system/tree/master)): The final project;
-- ([Milestones branch](https://github.com/Levysantiago/blockchain_data_tracking_system/tree/milestones)): The milestones for the master's degree subject.
+- **[Master branch](https://github.com/Levysantiago/blockchain_data_tracking_system/tree/master)**: The final project;
+- **[Milestones branch](https://github.com/Levysantiago/blockchain_data_tracking_system/tree/milestones)**: The milestones for the master's degree subject.
 
 ## Author
 
