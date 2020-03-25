@@ -41,9 +41,9 @@ contract DHT11{
     
     //LISTAS PARA ARMAZENAR LEITURAS
     uint[] public temperatures;
-    uint temperatures_count = 0;
+    uint temperatures_count;
     uint[] public humidities;
-    uint humidities_count = 0;
+    uint humidities_count;
     
     //EVENTOS
     event temperatureOverflow(uint temperature, uint max_temperature);
@@ -96,6 +96,8 @@ contract DHT11{
         min_temperature = 0;
         max_humidity = 10;
         min_humidity = 0;
+        temperatures_count = 0;
+        humidities_count = 0;
     }
     
     /*FUNÇÕES SET CONDICIONAIS*/
@@ -130,7 +132,7 @@ contract DHT11{
         if(_temperature >= max_temperature){
             emit temperatureOverflow(_temperature, max_temperature);
         }
-        else if(_temperature < min_temperature){
+        else if(_temperature <= min_temperature){
             emit temperatureUnderflow(_temperature, min_temperature);
         }
     }
@@ -165,7 +167,7 @@ contract DHT11{
         if(_humidity >= max_humidity){
             emit humidityOverflow(_humidity, max_humidity);
         }
-        else if(_humidity < min_humidity){
+        else if(_humidity <= min_humidity){
             emit humidityUnderflow(_humidity, min_humidity);
         }
     }
@@ -218,6 +220,98 @@ contract DHT11{
         ids = _ids;
     }
     
+    /**
+     * Nome da Função: setMaxHumidity
+     * 
+     * Autor: Levy Santiago
+     * 
+     * Descrição: Atualiza o valor máximo da umidade para invocar futuramente um evento
+     * 
+     * Escopo: public
+     * 
+     * Parâmetros:
+     * - _max_humidity: O novo valor máximo de umidade.
+     * 
+     * Retorno:
+     * null
+     * 
+     * Restrição:
+     * - onlyOwnerOrManager: Somente o dono ou gerenciador do contrato pode realizar esta operação
+     **/
+    function setMaxHumidity(uint _max_humidity) public onlyOwnerOrManager(msg.sender){
+        assert(_max_humidity > 0 && _max_humidity > min_humidity);
+        max_humidity = _max_humidity;
+    }
+    
+    /**
+     * Nome da Função: setMaxTemperature
+     * 
+     * Autor: Levy Santiago
+     * 
+     * Descrição: Atualiza o valor máximo da temperatura para invocar futuramente um evento
+     * 
+     * Escopo: public
+     * 
+     * Parâmetros:
+     * - _max_temperature: O novo valor máximo de temperatura.
+     * 
+     * Retorno:
+     * null
+     * 
+     * Restrição:
+     * - onlyOwnerOrManager: Somente o dono ou gerenciador do contrato pode realizar esta operação
+     **/
+    function setMaxTemperature(uint _max_temperature) public onlyOwnerOrManager(msg.sender){
+        assert(_max_temperature > 0 && _max_temperature > min_temperature);
+        max_temperature = _max_temperature;
+    }
+    
+    /**
+     * Nome da Função: setMinHumidity
+     * 
+     * Autor: Levy Santiago
+     * 
+     * Descrição: Atualiza o valor mínimo da umidade para invocar futuramente um evento
+     * 
+     * Escopo: public
+     * 
+     * Parâmetros:
+     * - _min_humidity: O novo valor mínimo de umidade.
+     * 
+     * Retorno:
+     * null
+     * 
+     * Restrição:
+     * - onlyOwnerOrManager: Somente o dono ou gerenciador do contrato pode realizar esta operação
+     **/
+    function setMinHumidity(uint _min_humidity) public onlyOwnerOrManager(msg.sender){
+        assert(_min_humidity >= 0 && _min_humidity < max_temperature);
+        min_humidity = _min_humidity;
+    }
+    
+    /**
+     * Nome da Função: setMinTemperature
+     * 
+     * Autor: Levy Santiago
+     * 
+     * Descrição: Atualiza o valor mínimo da temperatura para invocar futuramente um evento
+     * 
+     * Escopo: public
+     * 
+     * Parâmetros:
+     * - _min_humidity: O novo valor mínimo de temperatura.
+     * 
+     * Retorno:
+     * null
+     * 
+     * Restrição:
+     * - onlyOwnerOrManager: Somente o dono ou gerenciador do contrato pode realizar esta operação
+     **/
+    function setMinTemperature(uint _min_temperature) public onlyOwnerOrManager(msg.sender){
+        assert(_min_temperature >= 0 && _min_temperature < max_temperature);
+        min_temperature = _min_temperature;
+    }
+    
     /** FUNÇÕES GET **/
     
     /**
@@ -237,6 +331,7 @@ contract DHT11{
      * - uint humidity: A última umidade recebida pelo contrato;
      **/
     function getLastValues() public view returns(uint, uint){
+        assert(temperatures_count > 0 && humidities_count > 0);
         return (temperatures[temperatures_count-1], humidities[humidities_count-1]);
     }
     
