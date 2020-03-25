@@ -4,18 +4,12 @@ pragma solidity ^0.4.23;
      * Contrato que representa um sensor DHT11. Este contrato é responsável por receber, armazenar e monitorar todas as leituras 
      * do sensor DHT11, de tal forma que, se um valor exceder o máximo predefinido, este gera um evento que pode ser recuperado
      * por uma aplicação exterior para tomar uma decisão.
-     **/
-contract DHT11{
-    
-    /**
-     * DADOS INDIVIDUAIS DO SENSOR
-     * 
+     *
+     * VARIÁVEIS DO CONTRATO
      * owner: Dono do contrato, que será o produtor
      * manager: Gerenciador do contrato, que será o Middleware
      * name: Nome do sensor
      * ids: Id do sensor (relacionado com o Banco de Dados)
-     * 
-     * DADOS DE LEITURA
      * max_temperature: A temperatura máxima. Caso a captura ultrapasse superiormente esse valor, o código gera um evento (temperatureOverflow);
      * min_temperature: A temperatura mínima. Caso a captura ultrapasse inferiormente esse valor, o código gera um evento (temperatureUnderflow);
      * max_humidity: A umidade máxima. Caso a captura ultrapasse superiormente esse valor, o código gera um evento (humidityOverflow);
@@ -23,41 +17,41 @@ contract DHT11{
      * temperatures: Um array para armazenar todas as capturas de temperatura ambiente;
      * temperatures_count: Conta a quantidade de capturas de temperatura salvas na lista "tempereatures"
      * humidities: Um array para armazenar todas as capturas de umidade ambiente;
-     * temperatures_count: Conta a quantidade de capturas de umidade salvas na lista "humidities"
+     * humidities_count: Conta a quantidade de capturas de umidade salvas na lista "humidities"
      * 
-     * EVENTS
+     * EVENTOS
      * temperatureOverflow: É gerado quando uma captura de temperatura ultrapassa superiormente seu valor máximo (max_temperature);
      * temperatureUnderflow: É gerado quando uma captura de temperatura ultrapassa inferiormente seu valor mínimo (min_temperature);
      * humidityOverflow: É gerado quando uma captura de umidade ultrapassa superiormente seu valor máximo (max_humidity)
      * humidityUnderflow: É gerado quando uma captura de umidade ultrapassa inferiormente seu valor mínimo (min_humidity)
-     * 
      **/
-     //PERSONAL SENSOR DATA
+contract DHT11{
+     //DADOS DE IDENTIFICAÇÃO
     address public owner;
     address public manager;
     string public name;
     uint public ids;
     
     
-    // READ DATA
+    // VALORES PARA CONTROLE
     uint public max_temperature;
     uint public min_temperature;
     uint public max_humidity;
     uint public min_humidity;
     
-    //SAVINGS
+    //LISTAS PARA ARMAZENAR LEITURAS
     uint[] public temperatures;
     uint temperatures_count = 0;
     uint[] public humidities;
     uint humidities_count = 0;
     
-    //EVENTS
+    //EVENTOS
     event temperatureOverflow(uint temperature, uint max_temperature);
     event temperatureUnderflow(uint temperature, uint min_temperature);
     event humidityOverflow(uint humidity, uint max_humidity);
     event humidityUnderflow(uint humidity, uint min_humidity);
     
-    //MODIFIERS
+    /*MODIFICADORES*/
     
     /**
      * Nome do Modificador: onlyOwnerOrManager
@@ -104,7 +98,7 @@ contract DHT11{
         min_humidity = 0;
     }
     
-    /*SET SPECIAL CONDITIONAL FUNCTIONS*/
+    /*FUNÇÕES SET CONDICIONAIS*/
     
     /**
      * Nome da Função: setTemperature
@@ -176,7 +170,7 @@ contract DHT11{
         }
     }
     
-    /** SET FUNCTIONS **/
+    /** FUNÇÕES SET **/
     
     /**
      * Nome da Função: setName
@@ -224,7 +218,7 @@ contract DHT11{
         ids = _ids;
     }
     
-    /** GET FUNCTIONS **/
+    /** FUNÇÕES GET **/
     
     /**
      * Nome da Função: getLastValues
