@@ -3,7 +3,9 @@ node.js:
   - v10.15.3
 npm:
   - 6.4.1
-sudo: false
+sudo: required
+notifications:
+  - email: false
 install:
   - npm i -g @adonisjs/cli
   - cd server && mv .env.example .env && npm install
