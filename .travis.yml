@@ -6,7 +6,6 @@ npm:
   - 6.4.1
 install:
   - npm i -g @adonisjs/cli
-  - touch .env
-  - cd server && npm install
+  - cd server && touch .env && npm install
 script:
   - adonis test
