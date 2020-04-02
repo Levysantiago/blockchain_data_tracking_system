@@ -1,6 +1,5 @@
 language: node.js
 node.js:
-  - node
   - v10.15.3
 npm:
   - 6.4.1
