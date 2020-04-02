@@ -1,0 +1,3 @@
+language: node.js
+nvm:
+  - v10.15.3
