@@ -2,16 +2,16 @@
 
 const { test, before } = use("Test/Suite")("Testing DHT11 Smart Contract");
 
-require("dotenv").config();
-const env = process.env;
 const Web3 = use("web3");
 //If using external provider
 //const provider = new Web3.providers.HttpProvider(env.PROVIDER_LINK);
 //const web3 = new Web3(provider);
 const ganache = require("ganache-cli");
 const web3 = new Web3(ganache.provider());
-const { interface: abi, bytecode } = require("../../app/ethereum/build/" +
-  env.SMC_BUILD_NAME);
+const {
+  interface: abi,
+  bytecode
+} = require("../../app/ethereum/build/DHT11.json");
 
 let contract, accounts, owner, contract_address;
 before(async () => {
