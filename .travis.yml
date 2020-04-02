@@ -7,5 +7,6 @@ npm:
 install:
   - npm i -g @adonisjs/cli
   - cd server && mv .env.example .env && npm install
+  - npm run compile
 script:
   - adonis test
