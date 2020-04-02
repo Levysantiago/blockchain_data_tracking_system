@@ -2,9 +2,7 @@
 
 This project aims to use blockchain technology to track data from gourmet cocoa production. This is a collaboration for the project IoT-Cocoa (read the article [here](https://ieeexplore.ieee.org/abstract/document/8937903/)).
 
-<p>
-  <img src="https://travis-ci.org/Levysantiago/blockchain_data_tracking_system.svg?branch=master" alt="Travis build result">
-</p>
+[![Build Status](https://travis-ci.org/Levysantiago/blockchain_data_tracking_system.svg?branch=master)](https://travis-ci.org/Levysantiago/blockchain_data_tracking_system)
 
 ## Project stage
 
