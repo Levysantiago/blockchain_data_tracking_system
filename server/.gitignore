@@ -12,3 +12,6 @@ database/*.sqlite
 
 # The compiled smart contracts folder
 build
+
+#The lock dependences
+package-lock.json
