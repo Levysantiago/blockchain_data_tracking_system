@@ -15,6 +15,11 @@ This project started at UFBA master's degree course, with the subject **Distribu
 - **[Master branch](https://github.com/Levysantiago/blockchain_data_tracking_system/tree/master)**: The final project;
 - **[Milestones branch](https://github.com/Levysantiago/blockchain_data_tracking_system/tree/milestones)**: The milestones for the master's degree subject.
 
+## Versions
+
+- **Node.js:** v10.15.3
+- **NPM:** 6.4.1
+
 ## Author
 
 - Levy Santiago
