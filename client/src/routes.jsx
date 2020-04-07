@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import App from "./pages/App";
+import Home from "./pages/Home";
 
 const Routes = (
   <Router>
-    <Route path="/" exact strict component={App} />
+    <Route path="/" exact strict component={Home} />
   </Router>
 );
 
