@@ -1,5 +1,7 @@
 module.exports = {
   menu: {
-    home: "Início"
+    home: "Dashboard",
+    analysis: "Analysis",
+    transactions: "Transações"
   }
 };
