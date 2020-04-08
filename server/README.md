@@ -13,7 +13,7 @@ This is the server side of this project, an API that communicates with the Smart
 | /getLastMeasures | POST   | Get the last measure of a sensor.                           | ids, sensorname               |
 | /getTransactions | POST   | Get all transactions from the smart contract of a sensor.   | ids, sensorname               |
 
-##Arguments definition
+## Arguments definition
 
 | Name         | Description                                      | Type   |
 | ------------ | ------------------------------------------------ | ------ |
