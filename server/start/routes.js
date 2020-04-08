@@ -16,4 +16,10 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use("Route");
 
-Route.get("/", "DataInsertionController.getSensorMeasurement");
+Route.post("/setMeasures", "DataInsertionController.setMeasurement");
+Route.post("/getMeasures", "DataVisualizationController.getMeasurement");
+Route.post("/getTransactions", "DataVisualizationController.getTransactions");
+Route.post(
+  "/getLastMeasures",
+  "DataVisualizationController.getLastMeasurement"
+);
