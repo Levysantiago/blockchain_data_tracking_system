@@ -1,7 +1,7 @@
 module.exports = {
   menu: {
-    home: "Dashboard",
-    analysis: "Analysis",
-    transactions: "Transações"
+    home: { ITEM: "Dashboard", ROUTE: "/" },
+    analysis: { ITEM: "Controle", ROUTE: "/control" },
+    transactions: { ITEM: "Transações", ROUTE: "/transactions" }
   }
 };

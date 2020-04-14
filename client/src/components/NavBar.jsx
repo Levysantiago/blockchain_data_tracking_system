@@ -35,8 +35,18 @@ class NavBar extends Component {
             </a>
             <ul className="right hide-on-med-and-down">
               <li>
-                <a className="black-text" href="/">
-                  {lang.menu.home}
+                <a className="black-text" href={lang.menu.home.ROUTE}>
+                  {lang.menu.home.ITEM}
+                </a>
+              </li>
+              <li>
+                <a className="black-text" href={lang.menu.analysis.ROUTE}>
+                  {lang.menu.analysis.ITEM}
+                </a>
+              </li>
+              <li>
+                <a className="black-text" href={lang.menu.transactions.ROUTE}>
+                  {lang.menu.transactions.ITEM}
                 </a>
               </li>
             </ul>
@@ -45,8 +55,18 @@ class NavBar extends Component {
 
         <ul className="sidenav" id="mobile-demo">
           <li>
-            <a className="waves-effect waves-teal" href="/">
-              {lang.menu.home}
+            <a className="black-text" href={lang.menu.home.ROUTE}>
+              {lang.menu.home.ITEM}
+            </a>
+          </li>
+          <li>
+            <a className="black-text" href={lang.menu.analysis.ROUTE}>
+              {lang.menu.analysis.ITEM}
+            </a>
+          </li>
+          <li>
+            <a className="black-text" href={lang.menu.transactions.ROUTE}>
+              {lang.menu.transactions.ITEM}
             </a>
           </li>
         </ul>

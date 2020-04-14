@@ -2,13 +2,8 @@ import React, { Component } from "react";
 import NavBar from "../components/NavBar";
 import Card from "../components/Card";
 import ListTransactions from "../components/ListTransactions";
+import get_data_service from "../services/GetDataService";
 const lang = require("../lang/pt");
-require("dotenv").config();
-const {
-  REACT_APP_SERVER_HOST: SERVER_HOST,
-  REACT_APP_SERVER_PORT: SERVER_PORT
-} = process.env;
-const server_url = SERVER_HOST + ":" + SERVER_PORT;
 
 class App extends Component {
   state = {
@@ -22,17 +17,7 @@ class App extends Component {
 
   async getLastMeasures() {
     this.setState({ loader: "active" });
-    let response = await fetch(server_url + "/getLastMeasures", {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        ids: "id",
-        sensorname: "DHT11"
-      })
-    });
+    let response = await get_data_service.getLastMeasures();
 
     if ((await response.status) === 200) {
       this.setState({ loader: "hide" });
@@ -44,17 +29,7 @@ class App extends Component {
 
   async getTransactions() {
     this.setState({ loader: "active" });
-    let response = await fetch(server_url + "/getTransactions", {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        ids: "id",
-        sensorname: "DHT11"
-      })
-    });
+    let response = await get_data_service.getTransactions();
 
     if ((await response.status) === 200) {
       this.setState({ loader: "" });
@@ -84,7 +59,7 @@ class App extends Component {
         <NavBar lang={lang} />
         <div className="container row">
           <header className="center">
-            <h1 className="App-title">Dashboard</h1>
+            <h1 className="App-title">{lang.menu.home.ITEM}</h1>
           </header>
           <Card
             title={"Temperatura"}
@@ -106,6 +81,7 @@ class App extends Component {
             transactions={transactions}
             loader={loader}
             loaderMsg={loaderTrxMsg}
+            height={400}
           />
         </div>
       </div>

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Transaction from "./Transaction";
 import Loader from "./Loader";
+import Fermentation from "./Fermentation";
 
-class ListTransactions extends Component {
+class ListFermentations extends Component {
   conditionalHiding() {
     if (this.props.loader) {
       return "hide";
@@ -10,7 +10,7 @@ class ListTransactions extends Component {
   }
 
   render() {
-    const { title, transactions, loader, loaderMsg, height } = this.props;
+    const { title, list, loader, loaderMsg, height } = this.props;
 
     const scrolled = {
       overflowY: "scroll",
@@ -27,8 +27,8 @@ class ListTransactions extends Component {
             <span className="card-title">{title}</span>
             <Loader state={loader} msg={loaderMsg} />
             <div className={this.conditionalHiding()} style={scrolled}>
-              {transactions.map(transaction => (
-                <Transaction key={i++} data={transaction} />
+              {list.map(transaction => (
+                <Fermentation key={i++} data={transaction} />
               ))}
             </div>
           </div>
@@ -38,4 +38,4 @@ class ListTransactions extends Component {
   }
 }
 
-export default ListTransactions;
+export default ListFermentations;

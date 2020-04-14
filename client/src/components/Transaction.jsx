@@ -11,30 +11,30 @@ class Transaction extends Component {
       fontSize: 12
     };
 
-    const { trx } = this.props;
+    const { data } = this.props;
     return (
       <div className="card-panel white">
         <div className="black-text">
           <p className="truncate" style={{ fontSize: 18, fontWeight: "bold" }}>
-            {"Input Data: " + trx.input.method + " -> " + trx.input.inputs}
+            {"Input Data: " + data.input.method + " -> " + data.input.inputs}
           </p>
           <p className="truncate" style={line}>
-            {"Timestamp: " + this.parseTimestamp(trx.timeStamp)}
+            {"Timestamp: " + this.parseTimestamp(data.timeStamp)}
           </p>
           <p className="truncate" style={line}>
-            {"Hash: " + trx.hash}
+            {"Hash: " + data.hash}
           </p>
           <p className="truncate" style={line}>
-            {"Block nº: " + trx.blockNumber}
+            {"Block nº: " + data.blockNumber}
           </p>
           <p className="truncate" style={line}>
-            {"From: " + trx.from}
+            {"From: " + data.from}
           </p>
           <p className="truncate" style={line}>
-            {"Fee: " + trx.gasUsed + " Gas"}
+            {"Fee: " + data.gasUsed + " Gas"}
           </p>
           <a
-            href={"https://rinkeby.etherscan.io/tx/" + trx.hash}
+            href={"https://rinkeby.etherscan.io/tx/" + data.hash}
             target="_blank"
             rel="noopener noreferrer"
             className="right"
