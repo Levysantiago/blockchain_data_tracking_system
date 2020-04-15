@@ -1,5 +1,6 @@
 "use strict";
 
+const db = require("../../services/DatabaseService");
 require("dotenv").config();
 const {
   MNEMONIC_WORDS,
@@ -93,6 +94,18 @@ class DataVisualizationController {
     );
 
     response.send(JSON.stringify(transactions));
+  }
+
+  async getLatestTransaction({ response }) {
+    const transaction = await ethservice.getLastTwoTransactions();
+
+    response.send(JSON.stringify(transaction));
+  }
+
+  async getFermentations({ response }) {
+    const fermentations = await db.selectFermentation();
+
+    response.send(fermentations);
   }
 }
 

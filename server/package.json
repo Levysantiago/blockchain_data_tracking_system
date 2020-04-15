@@ -30,6 +30,7 @@
     "axios": "^0.19.2",
     "ethereum-input-data-decoder": "^0.3.0",
     "ganache-cli": "^6.9.1",
+    "sqlite3": "^4.1.1",
     "truffle-hdwallet-provider": "0.0.3",
     "web3": "^1.0.0-beta.35"
   },

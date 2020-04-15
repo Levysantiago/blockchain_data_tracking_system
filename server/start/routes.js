@@ -23,3 +23,8 @@ Route.post(
   "/getLastMeasures",
   "DataVisualizationController.getLastMeasurement"
 );
+Route.get("/fermentations", "DataVisualizationController.getFermentations");
+Route.get(
+  "/getLatestTransaction",
+  "DataVisualizationController.getLatestTransaction"
+);
