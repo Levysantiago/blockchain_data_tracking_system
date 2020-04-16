@@ -7,8 +7,8 @@ const lang = require("../lang/pt");
 
 class Transactions extends Component {
   state = {
-    loader: "hide",
-    loader_transactions: "",
+    loader: false,
+    loader_transactions: false,
     loaderFermentationMsg: "Carregando Fermentações",
     loaderTrxMsg: "Carregando Transações",
     transactions: [],
@@ -16,12 +16,12 @@ class Transactions extends Component {
   };
 
   async getTransactions(blockstart, blockend) {
-    this.setState({ loader_transactions: "active" });
+    this.setState({ loader_transactions: true });
     let response = await get_data_service.getTransactions(blockstart, blockend);
     console.log(response);
 
     if ((await response.status) === 200) {
-      this.setState({ loader_transactions: "" });
+      this.setState({ loader_transactions: false });
       const json = await response.json();
       this.setState({ transactions: json });
       console.log("agora");
@@ -30,11 +30,11 @@ class Transactions extends Component {
   }
 
   async getFermentations() {
-    this.setState({ loader: "active" });
+    this.setState({ loader: true });
     let response = await get_data_service.getFermentations();
 
     if ((await response.status) === 200) {
-      this.setState({ loader: "" });
+      this.setState({ loader: false });
       const json = await response.json();
       this.setState({ fermentations: json });
       //console.log(this.state.fermentations);

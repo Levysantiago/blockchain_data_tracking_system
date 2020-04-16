@@ -105,9 +105,23 @@ class DataVisualizationController {
   }
 
   async getFermentations({ response }) {
-    const fermentations = await db.selectFermentation();
+    const fermentations = await db.selectFermentations();
 
     response.send(fermentations);
+  }
+
+  async getFermentation({ request, response }) {
+    const fermentation = await db.getLastFermentation();
+
+    if (!fermentation) {
+      return response.status(404).send("asd");
+    }
+
+    if (!fermentation.active) {
+      return response.status(204).send("asd");
+    }
+
+    return response.send(JSON.stringify(fermentation));
   }
 }
 

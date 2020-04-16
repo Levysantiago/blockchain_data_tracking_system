@@ -1,25 +1,27 @@
 import React, { Component } from "react";
 
 class Loader extends Component {
-  conditionalHiding() {
-    if (!this.props.state) {
-      return "hide";
-    }
-    return "";
-  }
+  //   conditionalHiding() {
+  //     if (!this.props.state) {
+  //       return "hide";
+  //     }
+  //     return "";
+  //   }
 
   render() {
     const style = {
       marginTop: 50
     };
 
+    const hiding_control = {
+      true: "active",
+      false: "hide"
+    };
+
     // "active" to turn on
     const { state, msg } = this.props;
     return (
-      <div
-        className={"col s12 center " + this.conditionalHiding()}
-        style={style}
-      >
+      <div className={"col s12 center " + hiding_control[state]} style={style}>
         <div className={"preloader-wrapper small " + state}>
           <div className="spinner-layer spinner-green-only">
             <div className="circle-clipper left">
@@ -33,7 +35,7 @@ class Loader extends Component {
             </div>
           </div>
         </div>
-        <label className="col s12">{msg}</label>
+        <label className={"col s12"}>{msg}</label>
       </div>
     );
   }

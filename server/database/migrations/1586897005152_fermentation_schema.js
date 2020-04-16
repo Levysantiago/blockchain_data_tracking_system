@@ -13,6 +13,7 @@ class FermentationSchema extends Schema {
       table.string("blockstart");
       table.string("blockend");
       table.date("timestamp");
+      table.boolean("active").default(true);
       table.timestamps();
     });
   }

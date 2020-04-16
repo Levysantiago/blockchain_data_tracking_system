@@ -52,6 +52,18 @@ const get_data_service = {
     });
 
     return response;
+  },
+
+  getFermentation: async () => {
+    let response = await fetch(server_url + "/fermentation", {
+      method: "get",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    });
+
+    return response;
   }
 };
 
