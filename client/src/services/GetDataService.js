@@ -6,17 +6,22 @@ const {
 const server_url = SERVER_HOST + ":" + SERVER_PORT;
 
 const get_data_service = {
-  getTransactions: async () => {
+  getTransactions: async (blockstart, blockend) => {
+    let json = {
+      ids: "id",
+      sensorname: "DHT11"
+    };
+    if (blockstart && blockend) {
+      json["blockstart"] = blockstart;
+      json["blockend"] = blockend;
+    }
     let response = await fetch(server_url + "/getTransactions", {
       method: "post",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        ids: "id",
-        sensorname: "DHT11"
-      })
+      body: JSON.stringify(json)
     });
 
     return response;
@@ -32,6 +37,18 @@ const get_data_service = {
         ids: "id",
         sensorname: "DHT11"
       })
+    });
+
+    return response;
+  },
+
+  getFermentations: async () => {
+    let response = await fetch(server_url + "/fermentations", {
+      method: "get",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
     });
 
     return response;

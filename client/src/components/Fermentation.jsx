@@ -11,24 +11,32 @@ class Fermentation extends Component {
       fontSize: 12
     };
 
-    const { data } = this.props;
+    const { data, id, onClick } = this.props;
     return (
-      <div className="card-panel white">
-        <div className="black-text">
-          <span className="truncate right" style={line}>
-            {"Date: Wed, 08 Apr 2020 18:45:08 GMT"}
-          </span>
-          <span className="truncate" style={line}>
-            {"Transactions: 33"}
-          </span>
-          <span className="truncate" style={line}>
-            {"Blockstart: 123"}
-          </span>
-          <span className="truncate" style={line}>
-            {"Blockend: 321"}
-          </span>
+      <a
+        href="#"
+        id={id}
+        onClick={async () => {
+          await onClick(id);
+        }}
+      >
+        <div className="card-panel white">
+          <div className="black-text">
+            <span className="truncate right" style={line}>
+              {this.parseTimestamp(data.timestamp)}
+            </span>
+            <span className="truncate" style={line}>
+              {"Transactions: " + data.trxs}
+            </span>
+            <span className="truncate" style={line}>
+              {"Blockstart: " + data.blockstart}
+            </span>
+            <span className="truncate" style={line}>
+              {"Blockend: " + data.blockend}
+            </span>
+          </div>
         </div>
-      </div>
+      </a>
     );
   }
 }

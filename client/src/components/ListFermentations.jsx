@@ -10,7 +10,7 @@ class ListFermentations extends Component {
   }
 
   render() {
-    const { title, list, loader, loaderMsg, height } = this.props;
+    const { title, list, loader, loaderMsg, height, onClick } = this.props;
 
     const scrolled = {
       overflowY: "scroll",
@@ -27,8 +27,13 @@ class ListFermentations extends Component {
             <span className="card-title">{title}</span>
             <Loader state={loader} msg={loaderMsg} />
             <div className={this.conditionalHiding()} style={scrolled}>
-              {list.map(transaction => (
-                <Fermentation key={i++} data={transaction} />
+              {list.map(fermentation => (
+                <Fermentation
+                  key={i}
+                  data={fermentation}
+                  id={i++}
+                  onClick={onClick}
+                />
               ))}
             </div>
           </div>

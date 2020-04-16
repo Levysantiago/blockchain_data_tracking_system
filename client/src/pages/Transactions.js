@@ -8,29 +8,63 @@ const lang = require("../lang/pt");
 class Transactions extends Component {
   state = {
     loader: "hide",
-    loaderMeasuresMsg: "Carregando Medidas",
+    loader_transactions: "",
+    loaderFermentationMsg: "Carregando Fermentações",
     loaderTrxMsg: "Carregando Transações",
-    transactions: []
+    transactions: [],
+    fermentations: []
   };
 
-  async getTransactions() {
-    this.setState({ loader: "active" });
-    let response = await get_data_service.getTransactions();
+  async getTransactions(blockstart, blockend) {
+    this.setState({ loader_transactions: "active" });
+    let response = await get_data_service.getTransactions(blockstart, blockend);
+    console.log(response);
 
     if ((await response.status) === 200) {
-      this.setState({ loader: "" });
+      this.setState({ loader_transactions: "" });
       const json = await response.json();
       this.setState({ transactions: json });
+      console.log("agora");
       console.log(this.state.transactions);
     }
   }
 
+  async getFermentations() {
+    this.setState({ loader: "active" });
+    let response = await get_data_service.getFermentations();
+
+    if ((await response.status) === 200) {
+      this.setState({ loader: "" });
+      const json = await response.json();
+      this.setState({ fermentations: json });
+      //console.log(this.state.fermentations);
+    }
+  }
+
+  handleFermentationClick = async id => {
+    let fermentation = this.state.fermentations[id];
+    if (fermentation) {
+      await this.getTransactions(
+        fermentation.blockstart,
+        fermentation.blockend
+      );
+    }
+  };
+
   async componentDidMount() {
-    await this.getTransactions();
+    //await this.getTransactions();
+    await this.getFermentations();
   }
 
   render() {
-    const { loader, loaderTrxMsg, transactions } = this.state;
+    const {
+      loader,
+      loader_transactions,
+      loaderTrxMsg,
+      loaderFermentationMsg,
+      transactions,
+      fermentations
+    } = this.state;
 
     return (
       <div>
@@ -41,13 +75,16 @@ class Transactions extends Component {
           </header>
           <ListFermentations
             title={"Últimas fermentações"}
-            list={[1, 2, 3]}
+            list={fermentations}
+            loader={loader}
+            loaderMsg={loaderFermentationMsg}
+            onClick={this.handleFermentationClick}
             height={400}
           />
           <ListTransactions
             title={"Últimas transações"}
             transactions={transactions}
-            loader={loader}
+            loader={loader_transactions}
             loaderMsg={loaderTrxMsg}
             height={800}
           />
