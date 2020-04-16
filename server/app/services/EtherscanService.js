@@ -21,6 +21,7 @@ class EtherscanService {
     transactions = transactions.data.result;
     transactions.map(t => {
       let json = decoder.decodeData(t.input);
+      json.inputs[0] = json.inputs[0].toString();
       t.input = json;
     });
 
@@ -37,6 +38,8 @@ class EtherscanService {
     transaction = transaction.data.result[0];
 
     let json = decoder.decodeData(transaction.input);
+    //Considering data as INT
+    transaction.input.inputs[0] = transaction.input.inputs[0].toString();
     transaction.input = json;
 
     return transaction;
@@ -54,6 +57,9 @@ class EtherscanService {
 
     trx.input = decoder.decodeData(trx.input);
     trx2.input = decoder.decodeData(trx2.input);
+    //Considering data as INT
+    trx.input.inputs[0] = trx.input.inputs[0].toString();
+    trx2.input.inputs[0] = trx2.input.inputs[0].toString();
     let json = [trx, trx2];
 
     return json;
