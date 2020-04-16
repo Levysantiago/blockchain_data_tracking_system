@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Transactions from "./pages/Transactions";
-import Analysis from "./pages/Analysis";
+import Control from "./pages/Control";
 const lang = require("./lang/pt");
 
 const Routes = (
@@ -14,7 +14,7 @@ const Routes = (
       strict
       component={Transactions}
     />
-    <Route path={lang.menu.analysis.ROUTE} exact strict component={Analysis} />
+    <Route path={lang.menu.control.ROUTE} exact strict component={Control} />
   </Router>
 );
 

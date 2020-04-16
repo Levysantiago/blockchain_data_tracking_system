@@ -40,8 +40,8 @@ class NavBar extends Component {
                 </a>
               </li>
               <li>
-                <a className="black-text" href={lang.menu.analysis.ROUTE}>
-                  {lang.menu.analysis.ITEM}
+                <a className="black-text" href={lang.menu.control.ROUTE}>
+                  {lang.menu.control.ITEM}
                 </a>
               </li>
               <li>
@@ -60,8 +60,8 @@ class NavBar extends Component {
             </a>
           </li>
           <li>
-            <a className="black-text" href={lang.menu.analysis.ROUTE}>
-              {lang.menu.analysis.ITEM}
+            <a className="black-text" href={lang.menu.control.ROUTE}>
+              {lang.menu.control.ITEM}
             </a>
           </li>
           <li>

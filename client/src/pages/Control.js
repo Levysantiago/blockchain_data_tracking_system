@@ -12,7 +12,7 @@ class Control extends Component {
         <NavBar lang={lang} />
         <div className="container row">
           <header className="center">
-            <h1 className="App-title">{lang.menu.analysis.ITEM}</h1>
+            <h1 className="App-title">{lang.menu.control.ITEM}</h1>
           </header>
           <ControlPanel />
           <Chart
