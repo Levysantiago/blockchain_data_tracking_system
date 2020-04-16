@@ -4,7 +4,7 @@ import Chart from "../components/Chart";
 import ControlPanel from "../components/ControlPanel";
 const lang = require("../lang/pt");
 
-class Analysis extends Component {
+class Control extends Component {
   state = {};
   render() {
     return (
@@ -29,4 +29,4 @@ class Analysis extends Component {
   }
 }
 
-export default Analysis;
+export default Control;
