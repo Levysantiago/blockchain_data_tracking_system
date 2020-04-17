@@ -3,6 +3,7 @@ import NavBar from "../components/NavBar";
 import ListFermentations from "../components/ListFermentations";
 import get_data_service from "../services/GetDataService";
 import ListTransactions from "../components/ListTransactions";
+import qrcode from "qrcode-generator";
 const lang = require("../lang/pt");
 
 class Transactions extends Component {
@@ -54,6 +55,13 @@ class Transactions extends Component {
   async componentDidMount() {
     //await this.getTransactions();
     await this.getFermentations();
+
+    let typeNumber = 4;
+    let errorCorrectionLevel = "L";
+    let qr = qrcode(typeNumber, errorCorrectionLevel);
+    qr.addData("Hi!");
+    qr.make();
+    document.getElementById("placeHolder").innerHTML = qr.createImgTag();
   }
 
   render() {
@@ -73,6 +81,7 @@ class Transactions extends Component {
           <header className="center">
             <h1 className="App-title">{lang.menu.transactions.ITEM}</h1>
           </header>
+          <div id="placeHolder"></div>
           <ListFermentations
             title={"Últimas fermentações"}
             list={fermentations}
