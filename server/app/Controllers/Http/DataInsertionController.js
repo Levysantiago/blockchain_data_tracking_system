@@ -95,6 +95,12 @@ class DataInsertionController {
       }
     } else {
       await db.setActiveFermentation(json.activate);
+      const fermentation = await db.getLastFermentation();
+      // If this fermentation didn't have any transaction,
+      // it's gonne be removed
+      if (!fermentation.trxs) {
+        await db.removeFermentation(fermentation.id);
+      }
     }
     response.status(200).send("OK");
   }

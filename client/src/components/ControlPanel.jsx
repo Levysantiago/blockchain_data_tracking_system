@@ -25,16 +25,18 @@ const types = [
 
 class ControlPanel extends Component {
   render() {
-    const { type, onClick, loader, loader_msg, activate } = this.props;
+    const { type, onClick, loader, loader_msg, activate, data } = this.props;
 
     const btn_type = types[type];
 
     return (
       <div className="center">
-        <p style={{ fontWeight: "bold" }}>33</p>
+        <p style={{ fontWeight: "bold" }}>{data.trxs}</p>
         <p>Transações</p>
-        <p style={{ fontWeight: "bold" }}>Wed, 08 Apr 2020 18:45:08 GMT</p>
+        <p style={{ fontWeight: "bold" }}>{data.date}</p>
         <p>Aconteceu a última transação</p>
+        <p style={{ fontWeight: "bold" }}>{data.start}</p>
+        <p>Iniciou esta fermentação</p>
         <p style={{ fontWeight: "bold" }}>Monitorando</p>
 
         <Loader state={loader} msg={loader_msg} />

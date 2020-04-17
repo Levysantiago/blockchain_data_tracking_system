@@ -9,6 +9,9 @@ module.exports = {
 
   insertFermentation: async (trxs, blockstart, blockend, timestamp) => {
     try {
+      if (!trxs) {
+        trxs = 0;
+      }
       await Database.table(TABLE_NAME).insert({
         trxs: trxs,
         blockstart: blockstart,
@@ -33,7 +36,6 @@ module.exports = {
         .orderBy("id", "desc")
         .limit(1);
 
-      console.log(ids);
       await Database.table(TABLE_NAME)
         .where("id", ids[0].id)
         .update({
@@ -44,6 +46,18 @@ module.exports = {
           updated_at: new Date().getTime()
         });
 
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  },
+
+  removeFermentation: async id => {
+    try {
+      await Database.table(TABLE_NAME)
+        .where("id", id)
+        .delete();
       return true;
     } catch (e) {
       console.log(e);

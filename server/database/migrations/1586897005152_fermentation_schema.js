@@ -9,7 +9,7 @@ class FermentationSchema extends Schema {
   up() {
     this.create(TABLE_NAME, table => {
       table.increments();
-      table.int("trxs");
+      table.int("trxs").default(0);
       table.string("blockstart");
       table.string("blockend");
       table.date("timestamp");
