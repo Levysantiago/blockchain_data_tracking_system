@@ -23,7 +23,7 @@ class Fermentation extends Component {
         <div className="card-panel white">
           <div className="black-text">
             <span className="truncate right" style={line}>
-              {this.parseTimestamp(data.timestamp)}
+              {this.parseTimestamp(data.created_at)}
             </span>
             <span className="truncate" style={line}>
               {"Transactions: " + data.trxs}
