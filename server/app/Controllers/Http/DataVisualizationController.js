@@ -88,7 +88,7 @@ class DataVisualizationController {
    * @param {Response} ctx.response
    */
   async getTransactions({ request, response }) {
-    let { blockstart, blockend } = request.all();
+    let { blockstart, blockend } = request.params;
     if (!blockstart && !blockend) {
       blockstart = "6281085";
       blockend = "99999999";
@@ -96,6 +96,16 @@ class DataVisualizationController {
     const transactions = await ethservice.getTransactions(blockstart, blockend);
 
     response.send(JSON.stringify(transactions));
+  }
+
+  async getTransactionsByLink({ request, response }) {
+    const json = request.params;
+    response.redirect(
+      "http://localhost:3000/transactions/" +
+        json.blockstart +
+        "/" +
+        json.blockend
+    );
   }
 
   async getLatestTransaction({ response }) {

@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Transactions from "./pages/Transactions";
+import ExternalTransactions from "./pages/ExternalTransactions";
 import Control from "./pages/Control";
 const lang = require("./lang/pt");
 
@@ -13,6 +14,12 @@ const Routes = (
       exact
       strict
       component={Transactions}
+    />
+    <Route
+      path={lang.menu.transactions.ROUTE + "/:blockstart/:blockend"}
+      exact
+      strict
+      component={ExternalTransactions}
     />
     <Route path={lang.menu.control.ROUTE} exact strict component={Control} />
   </Router>
