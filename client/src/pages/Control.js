@@ -8,7 +8,7 @@ const lang = require("../lang/pt");
 
 class Control extends Component {
   state = {
-    control_button_name: "Iniciar",
+    button_type: 0,
     active: false,
     loader: true,
     activate_button: false,
@@ -24,9 +24,9 @@ class Control extends Component {
       const res = !!json.active;
       this.setState({ active: res });
       if (res) {
-        this.setState({ control_button_name: "Parar" });
+        this.setState({ button_type: 1 });
       } else {
-        this.setState({ control_button_name: "Iniciar" });
+        this.setState({ button_type: 0 });
       }
     }
     this.setState({ loader: false, activate_button: true });
@@ -39,9 +39,9 @@ class Control extends Component {
 
     if (response.status === 200) {
       if (this.state.active) {
-        this.setState({ control_button_name: "Iniciar" });
+        this.setState({ button_type: 0 });
       } else {
-        this.setState({ control_button_name: "Parar" });
+        this.setState({ button_type: 1 });
       }
       this.setState({ active: !this.state.active });
     }
@@ -53,12 +53,7 @@ class Control extends Component {
   };
 
   render() {
-    const {
-      control_button_name,
-      activate_button,
-      loader,
-      loader_msg
-    } = this.state;
+    const { button_type, activate_button, loader, loader_msg } = this.state;
 
     console.log(activate_button);
 
@@ -70,11 +65,11 @@ class Control extends Component {
             <h1 className="App-title">{lang.menu.control.ITEM}</h1>
           </header>
           <ControlPanel
-            button_name={control_button_name}
+            type={button_type}
             onClick={this.handleNewFermentation}
             loader={loader}
             loaderMsg={loader_msg}
-            activate_button={activate_button}
+            activate={activate_button}
           />
           <Chart
             title="Cocoa Beans Temperature"

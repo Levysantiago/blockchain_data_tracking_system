@@ -1,20 +1,33 @@
 import React, { Component } from "react";
 import Loader from "./Loader";
 
+const hide = {
+  true: "",
+  false: "hide"
+};
+
+const types = [
+  {
+    name: "Iniciar",
+    style: {
+      textTransform: "capitalize",
+      backgroundColor: "#1565c0"
+    }
+  },
+  {
+    name: "Parar",
+    style: {
+      textTransform: "capitalize",
+      backgroundColor: "#e53935"
+    }
+  }
+];
+
 class ControlPanel extends Component {
   render() {
-    const {
-      button_name,
-      onClick,
-      loader,
-      loader_msg,
-      activate_button
-    } = this.props;
+    const { type, onClick, loader, loader_msg, activate } = this.props;
 
-    const hide = {
-      true: "",
-      false: "hide"
-    };
+    const btn_type = types[type];
 
     return (
       <div className="center">
@@ -25,16 +38,14 @@ class ControlPanel extends Component {
         <p style={{ fontWeight: "bold" }}>Monitorando</p>
 
         <Loader state={loader} msg={loader_msg} />
-        <div
-          className={"center " + hide[activate_button]}
-          style={{ marginTop: 50 }}
-        >
+        <div className={"center " + hide[activate]} style={{ marginTop: 50 }}>
           <button
             type="button"
-            className={"modal-close waves-effect waves-green btn"}
+            className={"modal-close waves-effect waves-red btn-large"}
+            style={btn_type.style}
             onClick={onClick}
           >
-            {button_name}
+            {btn_type.name}
           </button>
         </div>
       </div>
