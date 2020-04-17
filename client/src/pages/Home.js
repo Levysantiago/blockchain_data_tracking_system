@@ -9,18 +9,18 @@ class App extends Component {
   state = {
     temperature: "",
     humidity: "",
-    loader: "hide",
+    loader: true,
     loaderMeasuresMsg: "Carregando Medidas",
     loaderTrxMsg: "Carregando Transações",
     transactions: []
   };
 
   async getLastMeasures() {
-    this.setState({ loader: "active" });
+    this.setState({ loader: true });
     let response = await get_data_service.getLastMeasures();
 
     if ((await response.status) === 200) {
-      this.setState({ loader: "hide" });
+      this.setState({ loader: false });
       const json = await response.json();
       this.setState({ temperature: json.temperature + "ºC" });
       this.setState({ humidity: json.humidity + "%" });
@@ -28,11 +28,11 @@ class App extends Component {
   }
 
   async getTransactions() {
-    this.setState({ loader: "active" });
+    this.setState({ loader: true });
     let response = await get_data_service.getTransactions();
 
     if ((await response.status) === 200) {
-      this.setState({ loader: "" });
+      this.setState({ loader: false });
       const json = await response.json();
       this.setState({ transactions: json });
       console.log(this.state.transactions);

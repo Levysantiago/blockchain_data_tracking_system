@@ -107,6 +107,12 @@ class DataVisualizationController {
   async getFermentations({ response }) {
     const fermentations = await db.selectFermentations();
 
+    fermentations.map(f => {
+      if (!f.timestamp) {
+        f.blockstart = f.blockend = f.timestamp = "...";
+      }
+    });
+
     response.send(fermentations);
   }
 
