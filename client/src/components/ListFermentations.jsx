@@ -21,7 +21,7 @@ class ListFermentations extends Component {
 
     let i = 0;
     return (
-      <div className="col s12">
+      <div className="col s12 l6">
         <div className="card white small" style={{ height: height }}>
           <div className="card-content black-text">
             <span className="card-title">{title}</span>

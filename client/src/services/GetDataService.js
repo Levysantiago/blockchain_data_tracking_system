@@ -1,11 +1,18 @@
 require("dotenv").config();
 const {
   REACT_APP_SERVER_HOST: SERVER_HOST,
-  REACT_APP_SERVER_PORT: SERVER_PORT
+  REACT_APP_SERVER_PORT: SERVER_PORT,
+  REACT_APP_CLIENT_HOST: CLIENT_HOST,
+  REACT_APP_CLIENT_PORT: CLIENT_PORT
 } = process.env;
 const server_url = SERVER_HOST + ":" + SERVER_PORT;
+const client_url = CLIENT_HOST + ":" + CLIENT_PORT;
 
 const get_data_service = {
+  external_route: (blockstart, blockend) => {
+    return client_url + "/transactions/" + blockstart + "/" + blockend;
+  },
+
   getTransactions: async (blockstart, blockend) => {
     let response = await fetch(
       server_url + "/getTransactions/" + blockstart + "/" + blockend,
