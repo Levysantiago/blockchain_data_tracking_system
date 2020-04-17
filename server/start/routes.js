@@ -36,7 +36,3 @@ Route.get(
   "DataVisualizationController.getLatestTransaction"
 );
 Route.get("/fermentation", "DataVisualizationController.getFermentation");
-Route.get(
-  "/transactions/:blockstart/:blockend",
-  "DataVisualizationController.getTransactionsByLink"
-);

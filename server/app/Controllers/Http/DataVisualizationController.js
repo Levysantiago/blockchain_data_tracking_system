@@ -98,16 +98,6 @@ class DataVisualizationController {
     response.send(JSON.stringify(transactions));
   }
 
-  async getTransactionsByLink({ request, response }) {
-    const json = request.params;
-    response.redirect(
-      "http://localhost:3000/transactions/" +
-        json.blockstart +
-        "/" +
-        json.blockend
-    );
-  }
-
   async getLatestTransaction({ response }) {
     const transaction = await ethservice.getLastTwoTransactions();
 
