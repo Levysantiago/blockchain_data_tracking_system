@@ -48,12 +48,12 @@ class DataInsertionController {
     const { measurements } = request.post();
 
     const contract_service = new ContractService(web3, contract);
-    // Commented for testing
-    // await contract_service.setTemperatureAndHumidity(
-    //   measurements,
-    //   BC_ADDRESS,
-    //   GAS
-    // );
+
+    await contract_service.setTemperatureAndHumidity(
+      measurements,
+      BC_ADDRESS,
+      GAS
+    );
 
     // Getting the last two transactions
     const last_transactions = await ethservice.getLastTwoTransactions();
