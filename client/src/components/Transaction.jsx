@@ -1,16 +1,28 @@
 import React, { Component } from "react";
 
+const line = {
+  fontSize: 12
+};
+
 class Transaction extends Component {
   parseTimestamp(timestamp) {
     const date = new Date(timestamp * 1000);
     return date.toGMTString();
   }
 
-  render() {
-    const line = {
-      fontSize: 12
-    };
+  renderLogs(data) {
+    if (data.logs) {
+      return (
+        <div>
+          <p className="truncate" style={line}>
+            {"Logs: " + JSON.stringify(data.logs)}
+          </p>
+        </div>
+      );
+    }
+  }
 
+  render() {
     const { data } = this.props;
     return (
       <div className="card-panel white">
@@ -33,6 +45,7 @@ class Transaction extends Component {
           <p className="truncate" style={line}>
             {"Fee: " + data.gasUsed + " Gas"}
           </p>
+          {this.renderLogs(data)}
           <a
             href={"https://rinkeby.etherscan.io/tx/" + data.hash}
             target="_blank"
