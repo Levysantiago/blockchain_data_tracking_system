@@ -93,7 +93,11 @@ class DataVisualizationController {
       blockstart = "6281085";
       blockend = "99999999";
     }
-    const transactions = await ethservice.getTransactions(blockstart, blockend);
+    const transactions = await ethservice.getTransactions(
+      web3,
+      blockstart,
+      blockend
+    );
 
     response.send(JSON.stringify(transactions));
   }

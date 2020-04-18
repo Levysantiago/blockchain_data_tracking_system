@@ -2,13 +2,15 @@ require("dotenv").config();
 const { SMC_ADDRESS, ETHSCAN_KEY, SMC_BUILD_NAME } = process.env;
 const axios = require("axios");
 const InputDataDecoder = require("ethereum-input-data-decoder");
-const { interface: abi } = require("../ethereum/build/" + SMC_BUILD_NAME);
-const decoder = new InputDataDecoder(JSON.parse(abi));
+let { interface: abi } = require("../ethereum/build/" + SMC_BUILD_NAME);
+abi = JSON.parse(abi);
+const decoder = new InputDataDecoder(abi);
+const { parseLog } = require('ethereum-event-logs')
 
 class EtherscanService {
-  async getTransactions(startblock, endblock) {
+  async getTransactions(web3, startblock, endblock) {
     let transactions = await axios.get(
-      "http://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=" +
+      "http://api-rinkeby.etherscan.io/api?module=account&&action=txlist&address=" +
         SMC_ADDRESS +
         "&startblock=" +
         startblock +
@@ -19,11 +21,30 @@ class EtherscanService {
     );
 
     transactions = transactions.data.result;
-    transactions.map(t => {
-      let json = decoder.decodeData(t.input);
-      json.inputs[0] = json.inputs[0].toString();
-      t.input = json;
-    });
+    await Promise.all(
+      transactions.map(async t => {
+        // Decoding the input data
+        let json = decoder.decodeData(t.input);
+        json.inputs[0] = json.inputs[0].toString();
+        t.input = json;
+
+        // Setting up the events
+        let events = await web3.eth.getTransactionReceipt(t.hash);
+
+        let logs = events["logs"];
+
+        // If there are logs
+        if(logs.length){
+          logs = parseLog(logs, abi);
+          // Removing unneeded information
+          logs = {name: logs[0].name, args: logs[0].args}
+        }
+
+        t.logs = logs;
+
+        return t;
+      })
+    );
 
     return transactions;
   }
@@ -63,6 +84,15 @@ class EtherscanService {
     let json = [trx, trx2];
 
     return json;
+  }
+
+  async getEvents(web3) {
+    let events = await web3.eth.getTransactionReceipt(
+      "0x4e0fdc89d2dcde9777b63591786b575278af25e64dfed2bf4af9b6e05f592f83"
+    );
+    events = { logs: events["logs"], logsBloom: events["logsBloom"] };
+
+    return events;
   }
 }
 
