@@ -4,7 +4,9 @@ const { TABLE_NAME } = process.env;
 
 module.exports = {
   selectFermentations: async () => {
-    return await Database.table(TABLE_NAME).select("*");
+    return await Database.table(TABLE_NAME)
+      .select("*")
+      .orderBy("id", "desc");
   },
 
   insertFermentation: async (trxs, blockstart, blockend, timestamp) => {
