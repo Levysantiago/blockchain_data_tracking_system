@@ -6,7 +6,35 @@ const hide = {
   false: "hide"
 };
 
-const types = [
+const divider_style = {
+  border: "0.2px solid #1e88e5",
+  marginTop: "20px"
+};
+
+const box_style = {
+  border: "2px solid #e0e0e0",
+  borderRadius: "40px",
+  backgroundColor: "#1e88e5"
+};
+
+const topic_style = {
+  fontSize: 30,
+  fontWeight: "bold",
+  padding: "5px",
+  marginBottom: "5px"
+};
+
+const value_style = {
+  ...box_style,
+  ...topic_style
+};
+
+const value_identifier_style = {
+  fontSize: 14
+};
+
+// Button types
+const button_types = [
   {
     name: "Iniciar",
     style: {
@@ -23,32 +51,56 @@ const types = [
   }
 ];
 
+const message_types = ["Monitoramento encerrado", "Monitorando"];
+
 class ControlPanel extends Component {
   render() {
     const { type, onClick, loader, loader_msg, activate, data } = this.props;
 
-    const btn_type = types[type];
+    const btn_type = button_types[type];
+    const message = message_types[type];
 
     return (
-      <div className="center">
-        <p style={{ fontWeight: "bold" }}>{data.trxs}</p>
-        <p>Transações</p>
-        <p style={{ fontWeight: "bold" }}>{data.date}</p>
-        <p>Aconteceu a última transação</p>
-        <p style={{ fontWeight: "bold" }}>{data.start}</p>
-        <p>Iniciou esta fermentação</p>
-        <p style={{ fontWeight: "bold" }}>Monitorando</p>
+      <div className="center blue darken-3" style={{ padding: "10px" }}>
+        <div className="container row white-text">
+          <p className="col s10 l6 offset-s1 offset-l3" style={value_style}>
+            {data.trxs}
+          </p>
+          <p className="col s12" style={value_identifier_style}>
+            Transações
+          </p>
 
-        <Loader state={loader} msg={loader_msg} />
-        <div className={"center " + hide[activate]} style={{ marginTop: 50 }}>
-          <button
-            type="button"
-            className={"modal-close waves-effect waves-red btn-large"}
-            style={btn_type.style}
-            onClick={onClick}
-          >
-            {btn_type.name}
-          </button>
+          <p className="col s10 l6 offset-s1 offset-l3" style={value_style}>
+            {data.date}
+          </p>
+          <p className="col s12" style={value_identifier_style}>
+            Aconteceu a última transação
+          </p>
+
+          <p className="col s10 l6 offset-s1 offset-l3" style={value_style}>
+            {data.start}
+          </p>
+          <p className="col s12" style={value_identifier_style}>
+            Iniciou esta fermentação
+          </p>
+
+          <div className="col s12" style={divider_style} />
+
+          <p className="col s12" style={topic_style}>
+            {message}
+          </p>
+
+          <Loader state={loader} msg={loader_msg} />
+          <div className={"center col s12 " + hide[activate]}>
+            <button
+              type="button"
+              className={"modal-close waves-effect waves-red btn-large"}
+              style={btn_type.style}
+              onClick={onClick}
+            >
+              {btn_type.name}
+            </button>
+          </div>
         </div>
       </div>
     );

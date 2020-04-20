@@ -14,19 +14,26 @@ const get_data_service = {
   },
 
   getTransactions: async (blockstart, blockend) => {
-    let response = await fetch(
-      server_url + "/getTransactions/" + blockstart + "/" + blockend,
-      {
-        method: "get",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      }
-    );
+    let json = {
+      ids: "id",
+      sensorname: "DHT11"
+    };
+    if (blockstart && blockend) {
+      json["blockstart"] = blockstart;
+      json["blockend"] = blockend;
+    }
+    let response = await fetch(server_url + "/getTransactions", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(json)
+    });
 
     return response;
   },
+
   getLastMeasures: async () => {
     let response = await fetch(server_url + "/getLastMeasures", {
       method: "post",

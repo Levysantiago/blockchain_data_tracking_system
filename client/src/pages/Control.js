@@ -37,9 +37,9 @@ class Control extends Component {
         this.setState({ button_type: 0 });
       }
 
-      // If this fermentation doesn't have any transaction yet
       const info = this.state.panel_info;
       info.start = new Date(json.created_at).toDateString();
+      // If this fermentation doesn't have any transaction yet
       if (json.trxs) {
         info.trxs = json.trxs;
         info.date = new Date(json.timestamp * 1000).toDateString();
@@ -80,18 +80,18 @@ class Control extends Component {
     return (
       <div>
         <NavBar lang={lang} />
+        <header className="center">
+          <h1 className="App-title">{lang.menu.control.ITEM}</h1>
+        </header>
+        <ControlPanel
+          type={button_type}
+          onClick={this.handleNewFermentation}
+          loader={loader}
+          loaderMsg={loader_msg}
+          activate={activate_button}
+          data={panel_info}
+        />
         <div className="container row">
-          <header className="center">
-            <h1 className="App-title">{lang.menu.control.ITEM}</h1>
-          </header>
-          <ControlPanel
-            type={button_type}
-            onClick={this.handleNewFermentation}
-            loader={loader}
-            loaderMsg={loader_msg}
-            activate={activate_button}
-            data={panel_info}
-          />
           <Chart
             title="Cocoa Beans Temperature"
             label1="Temperature (ºC)"

@@ -6,6 +6,20 @@ const dateStyle = {
   marginBottom: "15px"
 };
 
+const content_text = {
+  fontSize: 14
+};
+
+const logs_name_syle = {
+  ...content_text,
+  fontWeight: "bold"
+};
+
+const reveal_text_style = {
+  ...content_text,
+  marginBottom: "5px"
+};
+
 class Transaction extends Component {
   parseTimestamp(timestamp) {
     const date = new Date(timestamp * 1000);
@@ -21,10 +35,10 @@ class Transaction extends Component {
           <i className="material-icons deep-orange-text text-darken-1 left">
             warning
           </i>
-          <p className="truncate" style={{ fontSize: 14, fontWeight: "bold" }}>
+          <p className="truncate" style={logs_name_syle}>
             {logs.name}
           </p>
-          <p className="truncate" style={{ fontSize: 14 }}>
+          <p className="truncate" style={content_text}>
             {argskeys[0] +
               " = " +
               logs.args[argskeys[0]] +
@@ -44,7 +58,10 @@ class Transaction extends Component {
       <div className="card white sticky-action">
         {/* CONTENT */}
         <div className="card-content black-text">
-          <span className="card-title activator grey-text text-darken-4">
+          <span
+            className="card-title activator grey-text text-darken-4 truncate"
+            style={{ fontSize: 20 }}
+          >
             {data.input.method + " -> " + data.input.inputs}
             <i className="material-icons right">more_vert</i>
           </span>
@@ -59,14 +76,14 @@ class Transaction extends Component {
             >
               local_gas_station
             </i>
-            <p style={{ fontSize: 14 }}>{"Fee: " + data.gasUsed + " Gas"}</p>
+            <p style={content_text}>{"Fee: " + data.gasUsed + " Gas"}</p>
           </div>
           <a
             href={"https://rinkeby.etherscan.io/tx/" + data.hash}
             target="_blank"
             rel="noopener noreferrer"
             className="right"
-            style={{ fontSize: 14 }}
+            style={content_text}
           >
             See on etherscan
           </a>
@@ -78,30 +95,18 @@ class Transaction extends Component {
             Extra information<i className="material-icons right">close</i>
           </span>
           <div style={{ paddingLeft: "13px" }}>
-            <p
-              className="truncate "
-              style={{ fontSize: 14, marginBottom: "5px" }}
-            >
+            <p className="truncate " style={reveal_text_style}>
               <b>{"Block nº: "}</b>
               {data.blockNumber}
             </p>
-            <p
-              className="truncate "
-              style={{ fontSize: 14, marginBottom: "5px" }}
-            >
+            <p className="truncate " style={reveal_text_style}>
               <b>{"TrxHash: "}</b>
               {data.hash}
             </p>
-            <p
-              className="truncate"
-              style={{ fontSize: 14, marginBottom: "5px" }}
-            >
+            <p className="truncate" style={reveal_text_style}>
               <b>{"From: "}</b> {data.from}
             </p>
-            <p
-              className="truncate"
-              style={{ fontSize: 14, marginBottom: "5px" }}
-            >
+            <p className="truncate" style={reveal_text_style}>
               <b>{"To: "}</b>
               {data.to}
             </p>
