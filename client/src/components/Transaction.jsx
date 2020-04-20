@@ -1,21 +1,36 @@
 import React, { Component } from "react";
 
-const line = {
-  fontSize: 12
+const dateStyle = {
+  fontSize: 12,
+  color: "#757575",
+  marginBottom: "15px"
 };
 
 class Transaction extends Component {
   parseTimestamp(timestamp) {
     const date = new Date(timestamp * 1000);
-    return date.toGMTString();
+    return date.toDateString();
   }
 
   renderLogs(data) {
-    if (data.logs) {
+    if (data.logs.length) {
+      const logs = data.logs[0];
+      const argskeys = Object.keys(logs.args);
       return (
-        <div>
-          <p className="truncate" style={line}>
-            {"Logs: " + JSON.stringify(data.logs)}
+        <div className="row" style={{ marginLeft: "2px" }}>
+          <i className="material-icons deep-orange-text text-darken-1 left">
+            warning
+          </i>
+          <p className="truncate" style={{ fontSize: 14, fontWeight: "bold" }}>
+            {logs.name}
+          </p>
+          <p className="truncate" style={{ fontSize: 14 }}>
+            {argskeys[0] +
+              " = " +
+              logs.args[argskeys[0]] +
+              " (limit is " +
+              logs.args[argskeys[1]] +
+              ")"}
           </p>
         </div>
       );
@@ -23,38 +38,74 @@ class Transaction extends Component {
   }
 
   render() {
-    const { data } = this.props;
+    let { data } = this.props;
+
     return (
-      <div className="card-panel white">
-        <div className="black-text">
-          <p className="truncate" style={{ fontSize: 18, fontWeight: "bold" }}>
-            {"Input Data: " + data.input.method + " -> " + data.input.inputs}
-          </p>
-          <p className="truncate" style={line}>
-            {"Timestamp: " + this.parseTimestamp(data.timeStamp)}
-          </p>
-          <p className="truncate" style={line}>
-            {"Hash: " + data.hash}
-          </p>
-          <p className="truncate" style={line}>
-            {"Block nº: " + data.blockNumber}
-          </p>
-          <p className="truncate" style={line}>
-            {"From: " + data.from}
-          </p>
-          <p className="truncate" style={line}>
-            {"Fee: " + data.gasUsed + " Gas"}
+      <div className="card white sticky-action">
+        {/* CONTENT */}
+        <div className="card-content black-text">
+          <span className="card-title activator grey-text text-darken-4">
+            {data.input.method + " -> " + data.input.inputs}
+            <i className="material-icons right">more_vert</i>
+          </span>
+          <p className="truncate" style={dateStyle}>
+            {"Date: " + this.parseTimestamp(data.timeStamp)}
           </p>
           {this.renderLogs(data)}
+          <div className="row">
+            <i
+              className="material-icons left indigo-text text-lighten-1"
+              style={{ marginLeft: "13px", marginRight: "15px" }}
+            >
+              local_gas_station
+            </i>
+            <p style={{ fontSize: 14 }}>{"Fee: " + data.gasUsed + " Gas"}</p>
+          </div>
           <a
             href={"https://rinkeby.etherscan.io/tx/" + data.hash}
             target="_blank"
             rel="noopener noreferrer"
             className="right"
-            style={line}
+            style={{ fontSize: 14 }}
           >
             See on etherscan
           </a>
+        </div>
+
+        {/* REVEAL */}
+        <div className="card-reveal">
+          <span className="card-title grey-text text-darken-4">
+            Extra information<i className="material-icons right">close</i>
+          </span>
+          <div style={{ paddingLeft: "13px" }}>
+            <p
+              className="truncate "
+              style={{ fontSize: 14, marginBottom: "5px" }}
+            >
+              <b>{"Block nº: "}</b>
+              {data.blockNumber}
+            </p>
+            <p
+              className="truncate "
+              style={{ fontSize: 14, marginBottom: "5px" }}
+            >
+              <b>{"TrxHash: "}</b>
+              {data.hash}
+            </p>
+            <p
+              className="truncate"
+              style={{ fontSize: 14, marginBottom: "5px" }}
+            >
+              <b>{"From: "}</b> {data.from}
+            </p>
+            <p
+              className="truncate"
+              style={{ fontSize: 14, marginBottom: "5px" }}
+            >
+              <b>{"To: "}</b>
+              {data.to}
+            </p>
+          </div>
         </div>
       </div>
     );
