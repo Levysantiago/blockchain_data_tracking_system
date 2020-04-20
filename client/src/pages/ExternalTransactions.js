@@ -11,9 +11,9 @@ class ExternalTransactions extends Component {
     fermentations: []
   };
 
-  async getTransactions(blockstart, blockend) {
+  async getTransactions(id) {
     this.setState({ loader: true });
-    let response = await get_data_service.getTransactions(blockstart, blockend);
+    let response = await get_data_service.getTransactionsByFermentation(id);
 
     if ((await response.status) === 200) {
       this.setState({ loader: false });
@@ -23,8 +23,8 @@ class ExternalTransactions extends Component {
   }
 
   async componentDidMount() {
-    const { blockstart, blockend } = this.props.match.params;
-    await this.getTransactions(blockstart, blockend);
+    const { id } = this.props.match.params;
+    await this.getTransactions(id);
   }
 
   render() {

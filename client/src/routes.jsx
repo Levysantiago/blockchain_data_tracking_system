@@ -16,7 +16,7 @@ const Routes = (
       component={Transactions}
     />
     <Route
-      path={lang.menu.transactions.ROUTE + "/:blockstart/:blockend"}
+      path={lang.menu.transactions.ROUTE + "/:id"}
       exact
       strict
       component={ExternalTransactions}

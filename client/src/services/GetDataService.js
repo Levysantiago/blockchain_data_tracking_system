@@ -9,20 +9,34 @@ const server_url = SERVER_HOST + ":" + SERVER_PORT;
 const client_url = CLIENT_HOST + ":" + CLIENT_PORT;
 
 const get_data_service = {
-  external_route: (blockstart, blockend) => {
-    return client_url + "/transactions/" + blockstart + "/" + blockend;
+  external_route: id => {
+    return client_url + "/transactions/" + id;
   },
 
-  getTransactions: async (blockstart, blockend) => {
+  getTransactions: async () => {
     let json = {
       ids: "id",
       sensorname: "DHT11"
     };
-    if (blockstart && blockend) {
-      json["blockstart"] = blockstart;
-      json["blockend"] = blockend;
-    }
     let response = await fetch(server_url + "/getTransactions", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(json)
+    });
+
+    return response;
+  },
+
+  getTransactionsByFermentation: async id => {
+    let json = {
+      ids: "id",
+      sensorname: "DHT11",
+      fermentation_id: id
+    };
+    let response = await fetch(server_url + "/getTransactions/id", {
       method: "post",
       headers: {
         Accept: "application/json",

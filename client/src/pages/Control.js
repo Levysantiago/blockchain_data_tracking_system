@@ -6,6 +6,8 @@ import api from "../services/GetDataService";
 import setapi from "../services/SetDataService";
 const lang = require("../lang/pt");
 
+const storage = window.sessionStorage;
+
 class Control extends Component {
   state = {
     button_type: 0,
@@ -32,7 +34,9 @@ class Control extends Component {
       // Updating button type
       this.setState({ active: res });
       if (res) {
+        // Fermentation is active
         this.setState({ button_type: 1 });
+        storage.setItem("fermentation_id", res.id);
       } else {
         this.setState({ button_type: 0 });
       }
@@ -61,6 +65,8 @@ class Control extends Component {
       }
       this.setState({ active: !this.state.active });
     }
+    await this.verifyFermentation();
+
     this.setState({ loader: false, activate_button: true });
   };
 

@@ -39,7 +39,7 @@ const button_types = [
     name: "Iniciar",
     style: {
       textTransform: "capitalize",
-      backgroundColor: "#1565c0"
+      backgroundColor: "#4eae27"
     }
   },
   {

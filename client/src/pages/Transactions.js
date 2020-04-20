@@ -20,8 +20,8 @@ class Transactions extends Component {
     qrcode_tag: null
   };
 
-  async getTransactions(blockstart, blockend) {
-    let response = await api.getTransactions(blockstart, blockend);
+  async getTransactions(id) {
+    let response = await api.getTransactionsByFermentation(id);
     console.log(response);
 
     if ((await response.status) === 200) {
@@ -59,21 +59,15 @@ class Transactions extends Component {
     // Reseting transactions
     this.setState({ transactions: [], qrcode_tag: null });
 
-    //If fermentation already has some information
+    // If fermentation already has some information
     if (fermentation.trxs) {
       this.setState({ loader_transactions: true, loader_qrcode: true });
-      // Selecting the transactions based on blockstart and blockend
-      await this.getTransactions(
-        fermentation.blockstart,
-        fermentation.blockend
-      );
+      // Selecting the transactions based on fermentation id
+      await this.getTransactions(fermentation.id);
       this.setState({ loader_transactions: false, loader_qrcode: false });
 
       // Generating QrCode based on blockstart and blockend
-      const qrcode_string = await api.external_route(
-        fermentation.blockstart,
-        fermentation.blockend
-      );
+      const qrcode_string = await api.external_route(fermentation.id);
 
       this.createQrcode(qrcode_string);
     }
