@@ -18,10 +18,7 @@ const Route = use("Route");
 
 Route.post("/setMeasures", "DataInsertionController.setMeasurement");
 Route.post("/getMeasures", "DataVisualizationController.getMeasurement");
-Route.get(
-  "/getTransactions/:blockstart/:blockend",
-  "DataVisualizationController.getTransactions"
-);
+Route.post("/getTransactions", "DataVisualizationController.getTransactions");
 Route.post(
   "/getLastMeasures",
   "DataVisualizationController.getLastMeasurement"
