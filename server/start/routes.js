@@ -20,6 +20,10 @@ Route.post("/setMeasures", "DataInsertionController.setMeasurement");
 Route.post("/getMeasures", "DataVisualizationController.getMeasurement");
 Route.post("/getTransactions", "DataVisualizationController.getTransactions");
 Route.post(
+  "/getTransactions/id",
+  "DataVisualizationController.getTransactionsByFermentation"
+);
+Route.post(
   "/getLastMeasures",
   "DataVisualizationController.getLastMeasurement"
 );

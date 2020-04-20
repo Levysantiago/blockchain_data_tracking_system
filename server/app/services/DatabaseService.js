@@ -81,6 +81,19 @@ module.exports = {
     return fermentations[0];
   },
 
+  getFermentation: async id => {
+    // Selecting the last fermentation
+    const fermentation = await Database.table(TABLE_NAME)
+      .where("id", id)
+      .select("*");
+
+    if (!fermentation.length) {
+      return false;
+    }
+
+    return fermentation[0];
+  },
+
   isFermentationActive: async () => {
     const fermentations = await module.exports.getLastFermentation();
 

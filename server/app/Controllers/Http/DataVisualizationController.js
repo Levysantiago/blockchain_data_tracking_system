@@ -88,11 +88,9 @@ class DataVisualizationController {
    * @param {Response} ctx.response
    */
   async getTransactions({ request, response }) {
-    let { blockstart, blockend } = request.all();
-    if (!blockstart && !blockend) {
-      blockstart = "6281085";
-      blockend = "99999999";
-    }
+    const blockstart = "6281085";
+    const blockend = "99999999";
+
     const transactions = await ethservice.getTransactions(
       web3,
       blockstart,
@@ -100,6 +98,38 @@ class DataVisualizationController {
     );
 
     response.send(JSON.stringify(transactions));
+  }
+
+  /**
+   * Get the last measures of the sensor on its contract.
+   *
+   * JSON EXAMPLE
+   * {
+   *    "ids": "id",
+   *    "sensorname": "DHT11",
+   *    "fermentation_id": "1"
+   * }
+   *
+   * @param {Response} ctx.response
+   */
+  async getTransactionsByFermentation({ request, response }) {
+    let { fermentation_id } = request.all();
+
+    const fermentation = await db.getFermentation(fermentation_id);
+
+    let { blockstart, blockend } = fermentation;
+
+    if (!blockstart && !blockend) {
+      response.send([]);
+    } else {
+      const transactions = await ethservice.getTransactions(
+        web3,
+        blockstart,
+        blockend
+      );
+
+      response.send(JSON.stringify(transactions));
+    }
   }
 
   async getLatestTransaction({ response }) {
