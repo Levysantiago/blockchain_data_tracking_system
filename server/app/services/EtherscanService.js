@@ -5,7 +5,7 @@ const InputDataDecoder = require("ethereum-input-data-decoder");
 let { interface: abi } = require("../ethereum/build/" + SMC_BUILD_NAME);
 abi = JSON.parse(abi);
 const decoder = new InputDataDecoder(abi);
-const { parseLog } = require('ethereum-event-logs')
+const { parseLog } = require("ethereum-event-logs");
 
 class EtherscanService {
   async getTransactions(web3, startblock, endblock) {
@@ -34,10 +34,10 @@ class EtherscanService {
         let logs = events["logs"];
 
         // If there are logs
-        if(logs.length){
+        if (logs.length) {
           logs = parseLog(logs, abi);
           // Removing unneeded information
-          logs = {name: logs[0].name, args: logs[0].args}
+          logs = [{ name: logs[0].name, args: logs[0].args }];
         }
 
         t.logs = logs;
@@ -84,15 +84,6 @@ class EtherscanService {
     let json = [trx, trx2];
 
     return json;
-  }
-
-  async getEvents(web3) {
-    let events = await web3.eth.getTransactionReceipt(
-      "0x4e0fdc89d2dcde9777b63591786b575278af25e64dfed2bf4af9b6e05f592f83"
-    );
-    events = { logs: events["logs"], logsBloom: events["logsBloom"] };
-
-    return events;
   }
 }
 
