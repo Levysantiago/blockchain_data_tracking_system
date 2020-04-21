@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import get_data_service from "../services/GetDataService";
+import api from "../services/GetDataService";
 import ListTransactions from "../components/ListTransactions";
 const lang = require("../lang/pt");
 
@@ -7,24 +7,33 @@ class ExternalTransactions extends Component {
   state = {
     loader: false,
     loader_msg: "Carregando Transações",
-    transactions: [],
-    fermentations: []
+    transactions: []
   };
 
-  async getTransactions(id) {
+  async getTransactions(list_id) {
     this.setState({ loader: true });
-    let response = await get_data_service.getTransactionsByFermentation(id);
-
+    let response = await api.getFermentations();
     if ((await response.status) === 200) {
-      this.setState({ loader: false });
-      const json = await response.json();
-      this.setState({ transactions: json });
+      const fermentations = await response.json();
+
+      const size = fermentations.length;
+      if (size && fermentations[list_id]) {
+        response = await api.getTransactionsByFermentation(
+          fermentations[list_id].id
+        );
+
+        if ((await response.status) === 200) {
+          const json = await response.json();
+          this.setState({ transactions: json });
+        }
+      }
     }
+    this.setState({ loader: false });
   }
 
   async componentDidMount() {
-    const { id } = this.props.match.params;
-    await this.getTransactions(id);
+    const { id: list_id } = this.props.match.params;
+    await this.getTransactions(list_id);
   }
 
   render() {
