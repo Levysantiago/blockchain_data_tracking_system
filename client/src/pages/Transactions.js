@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import NavBar from "../components/NavBar";
 import ListFermentations from "../components/ListFermentations";
-import api from "../services/GetDataService";
+import Chart from "../components/Chart";
 import ListTransactions from "../components/ListTransactions";
+import api from "../services/GetDataService";
 import qrcode from "qrcode-generator";
 import QrCode from "../components/QrCode";
 const lang = require("../lang/pt");
@@ -17,7 +18,13 @@ class Transactions extends Component {
     loader_qrcode_msg: "Carregando QrCode",
     transactions: [],
     fermentations: [],
-    qrcode_tag: null
+    qrcode_tag: null,
+    graphic_info: {
+      tlabels: [],
+      temperatures: [],
+      hlabels: [],
+      humidities: []
+    }
   };
 
   async getTransactions(id) {
@@ -50,8 +57,8 @@ class Transactions extends Component {
     });
   };
 
-  handleFermentationClick = async id => {
-    let fermentation = this.state.fermentations[id];
+  handleFermentationClick = async list_id => {
+    let fermentation = this.state.fermentations[list_id];
 
     // Reseting transactions
     this.setState({ transactions: [], qrcode_tag: null });
@@ -61,12 +68,30 @@ class Transactions extends Component {
       this.setState({ loader_transactions: true, loader_qrcode: true });
       // Selecting the transactions based on fermentation id
       await this.getTransactions(fermentation.id);
-      this.setState({ loader_transactions: false, loader_qrcode: false });
+
+      this.setState({ loader_transactions: false });
 
       // Generating QrCode based on blockstart and blockend
       const qrcode_string = await api.external_route(fermentation.id);
 
+      // Generating qrcode
       this.createQrcode(qrcode_string);
+
+      this.setState({ loader_qrcode: false });
+
+      // Requesting the measures for the graphics
+      const response = await api.getMeasures(fermentation.id);
+      if (response.status === 200) {
+        const measures = await response.json();
+        const graphic_info = this.state.graphic_info;
+
+        graphic_info.tlabels = measures.temperatures;
+        graphic_info.temperatures = measures.temperatures;
+        graphic_info.hlabels = measures.humidities;
+        graphic_info.humidities = measures.humidities;
+
+        this.setState({ graphic_info: graphic_info });
+      }
     }
   };
 
@@ -102,7 +127,8 @@ class Transactions extends Component {
       loaderFermentationMsg,
       loader_qrcode_msg,
       transactions,
-      fermentations
+      fermentations,
+      graphic_info
     } = this.state;
 
     return (
@@ -122,6 +148,22 @@ class Transactions extends Component {
             lang={lang}
           />
           <QrCode loader={loader_qrcode} loader_msg={loader_qrcode_msg} />
+          <Chart
+            title="Cocoa Beans Temperature"
+            label1="Temperature (ºC)"
+            labels={graphic_info.tlabels}
+            data1={graphic_info.temperatures}
+            position="s12 l6"
+            height={50}
+          />
+          <Chart
+            title="Cocoa Beans Humidity"
+            label1="Humidity (%)"
+            labels={graphic_info.hlabels}
+            data1={graphic_info.humidities}
+            position="s12 l6"
+            height={50}
+          />
           <ListTransactions
             title={"Últimas transações"}
             transactions={transactions}

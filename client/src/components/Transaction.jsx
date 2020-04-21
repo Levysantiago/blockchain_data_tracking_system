@@ -62,7 +62,7 @@ class Transaction extends Component {
             className="card-title activator grey-text text-darken-4 truncate"
             style={{ fontSize: 20 }}
           >
-            {data.input.method + " -> " + data.input.inputs}
+            {data.input.method + " -> " + data.input.inputs[0]}
             <i className="material-icons right">more_vert</i>
           </span>
           {/* Date */}

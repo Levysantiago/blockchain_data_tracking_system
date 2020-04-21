@@ -13,6 +13,13 @@ class Control extends Component {
     loader: true,
     activate_button: false,
     loader_msg: "Alterando controle de fermentação",
+    graphic_info: {
+      tlabels: [],
+      temperatures: [],
+      hlabels: [],
+      humidities: []
+    },
+    fermentation_id: "",
     panel_info: {
       id: 0,
       trxs: 0,
@@ -29,7 +36,10 @@ class Control extends Component {
     // If fermentation is active
     if (response.status === 200) {
       const json = await response.json();
-      console.log(json);
+      //console.log(json);
+
+      this.setState({ fermentation_id: json.id });
+
       const res = !!json.active;
       // Updating button type
       this.setState({ active: res });
@@ -64,6 +74,25 @@ class Control extends Component {
     this.setState({ loader: false, activate_button: true });
   };
 
+  getMeasures = async () => {
+    const fermentation_id = this.state.fermentation_id;
+    if (fermentation_id) {
+      const response = await api.getMeasures(fermentation_id);
+
+      if (response.status === 200) {
+        const measures = await response.json();
+        const graphic_info = this.state.graphic_info;
+
+        graphic_info.tlabels = measures.temperatures;
+        graphic_info.temperatures = measures.temperatures;
+        graphic_info.hlabels = measures.humidities;
+        graphic_info.humidities = measures.humidities;
+
+        this.setState({ graphic_info: graphic_info });
+      }
+    }
+  };
+
   handleNewFermentation = async () => {
     this.setState({ loader: true, activate_button: false });
     const response = await setapi.setActivateFermentation(!this.state.active);
@@ -83,6 +112,7 @@ class Control extends Component {
 
   componentDidMount = async () => {
     await this.verifyFermentation();
+    await this.getMeasures();
   };
 
   render() {
@@ -91,7 +121,8 @@ class Control extends Component {
       activate_button,
       loader,
       loader_msg,
-      panel_info
+      panel_info,
+      graphic_info
     } = this.state;
 
     return (
@@ -113,8 +144,16 @@ class Control extends Component {
           <Chart
             title="Cocoa Beans Temperature"
             label1="Temperature (ºC)"
-            labels={["A", "B", "C"]}
-            data1={[3, 5, 9]}
+            labels={graphic_info.tlabels}
+            data1={graphic_info.temperatures}
+            position="s12 l6"
+            height={50}
+          />
+          <Chart
+            title="Cocoa Beans Humidity"
+            label1="Humidity (%)"
+            labels={graphic_info.hlabels}
+            data1={graphic_info.humidities}
             position="s12 l6"
             height={50}
           />

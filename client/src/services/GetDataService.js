@@ -64,6 +64,23 @@ const get_data_service = {
     return response;
   },
 
+  getMeasures: async fermentation_id => {
+    let response = await fetch(server_url + "/getMeasures", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        ids: "id",
+        sensorname: "DHT11",
+        fermentation_id: fermentation_id
+      })
+    });
+
+    return response;
+  },
+
   getFermentations: async () => {
     let response = await fetch(server_url + "/fermentations", {
       method: "get",

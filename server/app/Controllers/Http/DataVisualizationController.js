@@ -109,7 +109,7 @@ class DataVisualizationController {
    * @param {Response} ctx.response
    */
   async getTransactions({ request, response }) {
-    const blockstart = "6281085";
+    const blockstart = "6355663";
     const blockend = "99999999";
 
     const transactions = await ethservice.getTransactions(
