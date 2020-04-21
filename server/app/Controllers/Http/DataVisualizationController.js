@@ -1,23 +1,5 @@
 "use strict";
 
-const db = require("../../services/DatabaseService");
-require("dotenv").config();
-const {
-  MNEMONIC_WORDS,
-  PROVIDER_LINK,
-  SMC_ADDRESS,
-  SMC_BUILD_NAME
-} = process.env;
-
-const Web3 = require("web3");
-const HDWalletProvider = require("truffle-hdwallet-provider");
-const provider = new HDWalletProvider(MNEMONIC_WORDS, PROVIDER_LINK);
-const web3 = new Web3(provider);
-const web3bridge = use("App/lib/web3bridge");
-const ContractService = use("App/services/ContractService");
-const EtherscanService = use("App/services/EtherscanService");
-const ethservice = new EtherscanService();
-
 class DataVisualizationController {
   /**
    * Get the measures of the sensor on its contract.
@@ -32,23 +14,8 @@ class DataVisualizationController {
    * @param {Response} ctx.response
    */
   async getMeasurement({ request, response }) {
-    const { fermentation_id } = request.all();
-
-    if (!fermentation_id) {
-      return response.send(400);
-    }
-
-    const is_id_valid = await db.isValidId(fermentation_id);
-    if (!is_id_valid) {
-      return response.send(400);
-    }
-
-    const contract = await web3bridge.getContractInstance(
-      SMC_ADDRESS,
-      SMC_BUILD_NAME,
-      web3
-    );
-    const contract_service = new ContractService(web3, contract);
+    const contract_service = request.contract_service;
+    const fermentation_id = request.fermentation_id;
 
     const temperatures = await contract_service.getTemperatures(
       fermentation_id
@@ -74,17 +41,13 @@ class DataVisualizationController {
    *
    * @param {Response} ctx.response
    */
-  async getLastMeasurement({ response }) {
-    const contract = await web3bridge.getContractInstance(
-      SMC_ADDRESS,
-      SMC_BUILD_NAME,
-      web3
-    );
+  async getLastMeasurement({ request, response }) {
+    // Obtaining the contract service from middleware
+    const contract_service = request.contract_service;
 
     // Obtaining the last fermentation
-    let fermentation = await db.getLastFermentation();
+    let fermentation = request.fermentation;
 
-    const contract_service = new ContractService(web3, contract);
     const last_measures = await contract_service.getLastMeasures(
       fermentation.id
     );
@@ -112,8 +75,9 @@ class DataVisualizationController {
     const blockstart = "6355663";
     const blockend = "99999999";
 
+    const ethservice = request.ethservice;
     const transactions = await ethservice.getTransactions(
-      web3,
+      request.web3,
       blockstart,
       blockend
     );
@@ -134,17 +98,16 @@ class DataVisualizationController {
    * @param {Response} ctx.response
    */
   async getTransactionsByFermentation({ request, response }) {
-    let { fermentation_id } = request.all();
-
-    const fermentation = await db.getFermentation(fermentation_id);
+    const fermentation = request.fermentation;
 
     let { blockstart, blockend } = fermentation;
 
     if (!blockstart && !blockend) {
       response.send([]);
     } else {
+      const ethservice = request.ethservice;
       const transactions = await ethservice.getTransactions(
-        web3,
+        request.web3,
         blockstart,
         blockend
       );
@@ -153,32 +116,21 @@ class DataVisualizationController {
     }
   }
 
-  async getLatestTransaction({ response }) {
+  async getLatestTransaction({ request, response }) {
+    const ethservice = request.ethservice;
     const transaction = await ethservice.getLastTwoTransactions();
 
     response.send(JSON.stringify(transaction));
   }
 
-  async getFermentations({ response }) {
-    const fermentations = await db.selectFermentations();
-
-    let i = 0;
-    fermentations.map(f => {
-      if (!f.timestamp) {
-        f.blockstart = f.blockend = f.timestamp = "...";
-      }
-      f.list_id = i++;
-    });
+  async getFermentations({ request, response }) {
+    const fermentations = request.fermentations;
 
     response.send(fermentations);
   }
 
   async getFermentation({ request, response }) {
-    const fermentation = await db.getLastFermentation();
-
-    if (!fermentation) {
-      return response.status(404).send("No fermentation found");
-    }
+    const fermentation = request.fermentation;
 
     return response.send(JSON.stringify(fermentation));
   }

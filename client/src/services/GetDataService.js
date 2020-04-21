@@ -15,8 +15,10 @@ const get_data_service = {
 
   getTransactions: async () => {
     let json = {
-      ids: "id",
-      sensorname: "DHT11"
+      idm: "id",
+      idt: "0000000000000000",
+      type: "R",
+      timestamp: "1519746632"
     };
     let response = await fetch(server_url + "/getTransactions", {
       method: "post",
