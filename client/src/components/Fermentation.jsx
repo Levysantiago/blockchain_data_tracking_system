@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 
+const dateStyle = {
+  fontSize: 12,
+  color: "#757575",
+  marginBottom: "15px"
+};
+
 const badge_style = color => {
   return {
     backgroundColor: color,
@@ -55,18 +61,15 @@ class Fermentation extends Component {
         <div className="card-panel white">
           <div className="black-text">
             {this.renderBadge(data)}
-            <span className="truncate" style={line}>
+            <p className="truncate" style={dateStyle}>
               {this.parseTimestamp(data.created_at)}
-            </span>
-            <span className="truncate" style={line}>
-              {"Transactions: " + data.trxs}
-            </span>
-            <span className="truncate" style={line}>
-              {"Blockstart: " + data.blockstart}
-            </span>
-            <span className="truncate" style={line}>
-              {"Blockend: " + data.blockend}
-            </span>
+            </p>
+            <p className="truncate" style={line}>
+              <b>{"Transactions: "}</b> {data.trxs}
+            </p>
+            <p className="truncate" style={line}>
+              <b>{"Blocks: "}</b> {data.blockstart + " - " + data.blockend}
+            </p>
           </div>
         </div>
       </a>

@@ -22,13 +22,10 @@ class Transactions extends Component {
 
   async getTransactions(id) {
     let response = await api.getTransactionsByFermentation(id);
-    console.log(response);
 
     if ((await response.status) === 200) {
       const json = await response.json();
       this.setState({ transactions: json });
-      console.log("agora");
-      console.log(this.state.transactions);
     }
   }
 

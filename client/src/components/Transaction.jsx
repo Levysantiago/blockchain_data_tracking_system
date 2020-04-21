@@ -65,10 +65,15 @@ class Transaction extends Component {
             {data.input.method + " -> " + data.input.inputs}
             <i className="material-icons right">more_vert</i>
           </span>
+          {/* Date */}
           <p className="truncate" style={dateStyle}>
-            {"Date: " + this.parseTimestamp(data.timeStamp)}
+            {this.parseTimestamp(data.timeStamp)}
           </p>
+
+          {/* Event Logs */}
           {this.renderLogs(data)}
+
+          {/* Gas Fee */}
           <div className="row">
             <i
               className="material-icons left indigo-text text-lighten-1"
@@ -76,7 +81,9 @@ class Transaction extends Component {
             >
               local_gas_station
             </i>
-            <p style={content_text}>{"Fee: " + data.gasUsed + " Gas"}</p>
+            <p style={content_text}>
+              <b>{"Fee: "}</b> {data.gasUsed + " Gas"}
+            </p>
           </div>
           <a
             href={"https://rinkeby.etherscan.io/tx/" + data.hash}
