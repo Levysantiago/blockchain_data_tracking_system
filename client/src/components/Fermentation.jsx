@@ -43,10 +43,10 @@ class Fermentation extends Component {
       fontSize: 12
     };
 
-    const { data, id, onClick } = this.props;
+    const { data, id, onClick, lang } = this.props;
     return (
       <a
-        href="#"
+        href={lang.menu.transactions.ROUTE + "/" + id}
         id={id}
         onClick={async () => {
           await onClick(id);

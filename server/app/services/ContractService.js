@@ -12,19 +12,23 @@ class ContractService {
 
   async setHumidity(humidity, from, gas) {
     await this.contract.methods
-      .setHumidity(temperature)
+      .setHumidity(humidity)
       .send({ from: from, gas: gas });
   }
 
   async setTemperatureAndHumidity(measures, from, gas) {
     if (measures.length > 1) {
-      await this.contract.methods
+      let results = {};
+      results.temperature = await this.contract.methods
         .setTemperature(measures[0])
         .send({ from: from, gas: gas });
-      await this.contract.methods
+      results.humidity = await this.contract.methods
         .setHumidity(measures[1])
         .send({ from: from, gas: gas });
+
+      return results;
     }
+    return false;
   }
 
   async getTemperatures() {

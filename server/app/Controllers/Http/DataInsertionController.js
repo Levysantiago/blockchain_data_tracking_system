@@ -35,6 +35,7 @@ class DataInsertionController {
    * @param {Response} ctx.response
    */
   async setMeasurement({ request, response }) {
+    // If there is a fermentation active
     const isActive = await db.isFermentationActive();
     if (!isActive) {
       return response.send("Fermentation did't start.");
@@ -49,22 +50,28 @@ class DataInsertionController {
 
     const contract_service = new ContractService(web3, contract);
 
-    await contract_service.setTemperatureAndHumidity(
+    const result = await contract_service.setTemperatureAndHumidity(
       measurements,
       BC_ADDRESS,
       GAS
     );
 
-    // Getting the last two transactions
-    const last_transactions = await ethservice.getLastTwoTransactions();
-
-    let fermentation = await db.getLastFermentation();
-    fermentation.trxs += last_transactions.length;
-    fermentation.blockend = last_transactions[0].blockNumber;
-    fermentation.timestamp = last_transactions[0].timeStamp;
-    if (!fermentation.blockstart) {
-      fermentation.blockstart = last_transactions[1].blockNumber;
+    if (!result) {
+      return response.send(400);
     }
+
+    const first_transaction = result.temperature;
+    const last_transaction = result.humidity;
+    // Obtaining the last fermentation
+    let fermentation = await db.getLastFermentation();
+    // Setting up the values got from the transactions
+    fermentation.trxs += 2;
+    fermentation.blockend = last_transaction.blockNumber;
+    fermentation.timestamp = new Date().getTime();
+    if (!fermentation.blockstart) {
+      fermentation.blockstart = first_transaction.blockNumber;
+    }
+    // Updating fermentation
     let res = db.updateFermentation(
       fermentation.trxs,
       fermentation.blockstart,

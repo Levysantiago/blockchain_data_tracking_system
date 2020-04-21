@@ -122,6 +122,7 @@ class Transactions extends Component {
             loaderMsg={loaderFermentationMsg}
             onClick={this.handleFermentationClick}
             height={400}
+            lang={lang}
           />
           <QrCode loader={loader_qrcode} loader_msg={loader_qrcode_msg} />
           <ListTransactions

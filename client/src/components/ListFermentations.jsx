@@ -10,7 +10,15 @@ class ListFermentations extends Component {
   }
 
   render() {
-    const { title, list, loader, loaderMsg, height, onClick } = this.props;
+    const {
+      title,
+      list,
+      loader,
+      loaderMsg,
+      height,
+      onClick,
+      lang
+    } = this.props;
 
     const scrolled = {
       overflowY: "scroll",
@@ -33,6 +41,7 @@ class ListFermentations extends Component {
                   data={fermentation}
                   id={i++}
                   onClick={onClick}
+                  lang={lang}
                 />
               ))}
             </div>
