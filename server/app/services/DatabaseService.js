@@ -68,17 +68,24 @@ module.exports = {
   },
 
   getLastFermentation: async () => {
+    // Counting the size
+    let count = await Database.table(TABLE_NAME).count();
+    if (count.length) {
+      count = count[0]["count(*)"];
+    } else {
+      return false;
+    }
+
     // Selecting the last fermentation
-    const fermentations = await Database.table(TABLE_NAME)
+    let fermentation = await Database.table(TABLE_NAME)
       .select("*")
       .orderBy("id", "desc")
       .limit(1);
 
-    if (!fermentations.length) {
-      return false;
-    }
+    fermentation = fermentation[0];
+    fermentation.list_id = count - 1;
 
-    return fermentations[0];
+    return fermentation;
   },
 
   getFermentation: async id => {

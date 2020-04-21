@@ -76,9 +76,19 @@ class Transactions extends Component {
   async componentDidMount() {
     //await this.getTransactions();
     await this.getFermentations();
+
+    const { id: fermentation_id } = this.props.match.params;
+    const fermentations_size = this.state.fermentations.length;
+    if (
+      fermentation_id &&
+      fermentations_size &&
+      fermentation_id < fermentations_size
+    ) {
+      await this.handleFermentationClick(fermentation_id);
+    }
   }
 
-  componentDidUpdate() {
+  async componentDidUpdate() {
     if (this.state.qrcode_tag) {
       document.getElementById("placeHolder").innerHTML = this.state.qrcode_tag;
     } else {

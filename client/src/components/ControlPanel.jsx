@@ -6,6 +6,16 @@ const hide = {
   false: "hide"
 };
 
+const warning_message_style = {
+  color: "#ff9e80",
+  fontWeight: "bold"
+};
+
+const fermentation_link_style = {
+  textDecoration: "underline",
+  color: "#90caf9"
+};
+
 const divider_style = {
   border: "0.2px solid #1e88e5",
   marginTop: "20px"
@@ -39,14 +49,16 @@ const button_types = [
     name: "Iniciar",
     style: {
       textTransform: "capitalize",
-      backgroundColor: "#4eae27"
+      backgroundColor: "#4eae27",
+      marginBottom: "20px"
     }
   },
   {
     name: "Parar",
     style: {
       textTransform: "capitalize",
-      backgroundColor: "#e53935"
+      backgroundColor: "#e53935",
+      marginBottom: "20px"
     }
   }
 ];
@@ -55,7 +67,15 @@ const message_types = ["Monitoramento encerrado", "Monitorando"];
 
 class ControlPanel extends Component {
   render() {
-    const { type, onClick, loader, loader_msg, activate, data } = this.props;
+    const {
+      type,
+      onClick,
+      loader,
+      loader_msg,
+      activate,
+      data,
+      lang
+    } = this.props;
 
     const btn_type = button_types[type];
     const message = message_types[type];
@@ -63,6 +83,7 @@ class ControlPanel extends Component {
     return (
       <div className="center blue darken-3" style={{ padding: "10px" }}>
         <div className="container row white-text">
+          {/* Amount of transactions */}
           <p className="col s10 l6 offset-s1 offset-l3" style={value_style}>
             {data.trxs}
           </p>
@@ -70,6 +91,7 @@ class ControlPanel extends Component {
             Transações
           </p>
 
+          {/* Date */}
           <p className="col s10 l6 offset-s1 offset-l3" style={value_style}>
             {data.date}
           </p>
@@ -77,6 +99,7 @@ class ControlPanel extends Component {
             Aconteceu a última transação
           </p>
 
+          {/* Start date */}
           <p className="col s10 l6 offset-s1 offset-l3" style={value_style}>
             {data.start}
           </p>
@@ -84,8 +107,15 @@ class ControlPanel extends Component {
             Iniciou esta fermentação
           </p>
 
+          {/* Warning message */}
+          <p className="col s12" style={warning_message_style}>
+            {data.warning}
+          </p>
+
+          {/* Divider */}
           <div className="col s12" style={divider_style} />
 
+          {/* Current message */}
           <p className="col s12" style={topic_style}>
             {message}
           </p>
@@ -100,6 +130,17 @@ class ControlPanel extends Component {
             >
               {btn_type.name}
             </button>
+
+            <div className="col s12">
+              <a
+                id="blue_link"
+                className="right"
+                style={fermentation_link_style}
+                href={lang.menu.transactions.ROUTE + "/" + data.id}
+              >
+                Veja mais informações desta fermentação
+              </a>
+            </div>
           </div>
         </div>
       </div>

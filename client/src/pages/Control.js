@@ -6,8 +6,6 @@ import api from "../services/GetDataService";
 import setapi from "../services/SetDataService";
 const lang = require("../lang/pt");
 
-const storage = window.sessionStorage;
-
 class Control extends Component {
   state = {
     button_type: 0,
@@ -16,9 +14,11 @@ class Control extends Component {
     activate_button: false,
     loader_msg: "Alterando controle de fermentação",
     panel_info: {
+      id: 0,
       trxs: 0,
       date: "...",
-      start: "..."
+      start: "...",
+      warning: ""
     }
   };
 
@@ -35,11 +35,22 @@ class Control extends Component {
       this.setState({ active: res });
       if (res) {
         // Fermentation is active
-        this.setState({ button_type: 1 });
-        storage.setItem("fermentation_id", res.id);
+        this.setState({
+          button_type: 1,
+          panel_info: { ...this.state.panel_info, warning: "" }
+        });
       } else {
-        this.setState({ button_type: 0 });
+        this.setState({
+          button_type: 0,
+          panel_info: {
+            ...this.state.panel_info,
+            warning: lang.messages.control_warning
+          }
+        });
       }
+      this.setState({
+        panel_info: { ...this.state.panel_info, id: json.list_id }
+      });
 
       const info = this.state.panel_info;
       info.start = new Date(json.created_at).toDateString();
@@ -96,6 +107,7 @@ class Control extends Component {
           loaderMsg={loader_msg}
           activate={activate_button}
           data={panel_info}
+          lang={lang}
         />
         <div className="container row">
           <Chart

@@ -19,6 +19,12 @@ const Routes = (
       path={lang.menu.transactions.ROUTE + "/:id"}
       exact
       strict
+      component={Transactions}
+    />
+    <Route
+      path={lang.menu.transactions.ROUTE + "/external/:id"}
+      exact
+      strict
       component={ExternalTransactions}
     />
     <Route path={lang.menu.control.ROUTE} exact strict component={Control} />

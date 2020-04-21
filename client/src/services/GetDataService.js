@@ -10,7 +10,7 @@ const client_url = CLIENT_HOST + ":" + CLIENT_PORT;
 
 const get_data_service = {
   external_route: id => {
-    return client_url + "/transactions/" + id;
+    return client_url + "/external/transactions/" + id;
   },
 
   getTransactions: async () => {

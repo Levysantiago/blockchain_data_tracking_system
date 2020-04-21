@@ -141,10 +141,12 @@ class DataVisualizationController {
   async getFermentations({ response }) {
     const fermentations = await db.selectFermentations();
 
+    let i = 0;
     fermentations.map(f => {
       if (!f.timestamp) {
         f.blockstart = f.blockend = f.timestamp = "...";
       }
+      f.list_id = i++;
     });
 
     response.send(fermentations);
@@ -154,12 +156,12 @@ class DataVisualizationController {
     const fermentation = await db.getLastFermentation();
 
     if (!fermentation) {
-      return response.status(404).send("asd");
+      return response.status(404).send("No fermentation found");
     }
 
-    if (!fermentation.active) {
-      return response.status(204).send("asd");
-    }
+    // if (!fermentation.active) {
+    //   return response.status(204).send("asd");
+    // }
 
     return response.send(JSON.stringify(fermentation));
   }
