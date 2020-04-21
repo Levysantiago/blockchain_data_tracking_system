@@ -116,13 +116,6 @@ class DataVisualizationController {
     }
   }
 
-  async getLatestTransaction({ request, response }) {
-    const ethservice = request.ethservice;
-    const transaction = await ethservice.getLastTwoTransactions();
-
-    response.send(JSON.stringify(transaction));
-  }
-
   async getFermentations({ request, response }) {
     const fermentations = request.fermentations;
 
