@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "adonis serve --dev",
+    "smctest": "adonis test",
     "compile": "node app/ethereum/compile.js",
     "deploy": "node app/ethereum/deploy.js",
     "test": "node ace test"

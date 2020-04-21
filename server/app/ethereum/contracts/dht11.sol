@@ -32,6 +32,14 @@ contract DHT11{
     string public name;
     uint public ids;
     
+    //ESTRUTURA PARA ARMAZENAR MEDIDAS
+    struct T_Measures {
+        uint[] temperatures;
+        uint[] humidities;
+    }
+    
+    mapping(uint => T_Measures) private fermentations;
+    
     
     // VALORES PARA CONTROLE
     uint public max_temperature;
@@ -40,10 +48,10 @@ contract DHT11{
     uint public min_humidity;
     
     //LISTAS PARA ARMAZENAR LEITURAS
-    uint[] public temperatures;
-    uint temperatures_count;
-    uint[] public humidities;
-    uint humidities_count;
+    // uint[] public temperature;
+    // uint temperatures_count;
+    // uint[] public humiditie;
+    // uint humidities_count;
     
     //EVENTOS
     event temperatureOverflow(uint temperature, uint max_temperature);
@@ -96,8 +104,6 @@ contract DHT11{
         min_temperature = 0;
         max_humidity = 10;
         min_humidity = 0;
-        temperatures_count = 0;
-        humidities_count = 0;
     }
     
     /*FUNÇÕES SET CONDICIONAIS*/
@@ -126,9 +132,9 @@ contract DHT11{
      * Restrição:
      * - onlyOwnerOrManager: Somente o dono ou gerenciador do contrato pode realizar esta operação
      **/
-    function setTemperature(uint _temperature) public onlyOwnerOrManager(msg.sender) {
+    function setTemperature(uint _temperature, uint _fermentation_id) public onlyOwnerOrManager(msg.sender) {
+        uint[] storage temperatures = fermentations[_fermentation_id].temperatures;
         temperatures.push(_temperature);
-        temperatures_count++;
         if(_temperature >= max_temperature){
             emit temperatureOverflow(_temperature, max_temperature);
         }
@@ -161,9 +167,9 @@ contract DHT11{
      * Restrição:
      * - onlyOwnerOrManager: Somente o dono ou gerenciador do contrato pode realizar esta operação
      **/
-    function setHumidity(uint _humidity) public onlyOwnerOrManager(msg.sender) {
+    function setHumidity(uint _humidity, uint _fermentation_id) public onlyOwnerOrManager(msg.sender) {
+        uint[] storage humidities = fermentations[_fermentation_id].humidities;
         humidities.push(_humidity);
-        humidities_count++;
         if(_humidity >= max_humidity){
             emit humidityOverflow(_humidity, max_humidity);
         }
@@ -330,7 +336,11 @@ contract DHT11{
      * - uint temperature: A última temperatura recebida pelo contrato;
      * - uint humidity: A última umidade recebida pelo contrato;
      **/
-    function getLastValues() public view returns(uint, uint){
+    function getLastValues(uint _fermentation_id) public view returns(uint, uint){
+        uint[] memory temperatures = fermentations[_fermentation_id].temperatures;
+        uint[] memory humidities = fermentations[_fermentation_id].humidities;
+        uint temperatures_count = temperatures.length;
+        uint humidities_count = humidities.length;
         assert(temperatures_count > 0 && humidities_count > 0);
         return (temperatures[temperatures_count-1], humidities[humidities_count-1]);
     }
@@ -350,8 +360,8 @@ contract DHT11{
      * Retorno:
      * - uint[] temperatures: A lista de temperaturas capturadas
      **/
-    function getTemperatures() public view returns(uint []){
-        return temperatures;
+    function getTemperatures(uint _fermentation_id) public view returns(uint []){
+        return fermentations[_fermentation_id].temperatures;
     }
     
     /**
@@ -369,8 +379,8 @@ contract DHT11{
      * Retorno:
      * - uint[] humidities: A lista de umidades capturadas
      **/
-    function getHumidities() public view returns(uint []){
-        return humidities;
+    function getHumidities(uint _fermentation_id) public view returns(uint []){
+        return fermentations[_fermentation_id].humidities;
     }
 
 }

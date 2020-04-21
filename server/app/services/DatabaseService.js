@@ -111,6 +111,15 @@ module.exports = {
     return !!fermentations.active;
   },
 
+  isValidId: async id => {
+    // Selecting the last fermentation
+    const fermentation = await Database.table(TABLE_NAME)
+      .where("id", id)
+      .count();
+
+    return !!fermentation[0]["count(*)"];
+  },
+
   setActiveFermentation: async value => {
     const fermentations = await module.exports.getLastFermentation();
 

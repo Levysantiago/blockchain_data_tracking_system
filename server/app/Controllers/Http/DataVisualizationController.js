@@ -26,19 +26,34 @@ class DataVisualizationController {
    * {
    *    "ids": "id",
    *    "sensorname": "DHT11"
+   *    "fermentation_id": "1"
    * }
    *
    * @param {Response} ctx.response
    */
-  async getMeasurement({ response }) {
+  async getMeasurement({ request, response }) {
+    const { fermentation_id } = request.all();
+
+    if (!fermentation_id) {
+      return response.send(400);
+    }
+
+    const is_id_valid = await db.isValidId(fermentation_id);
+    if (!is_id_valid) {
+      return response.send(400);
+    }
+
     const contract = await web3bridge.getContractInstance(
       SMC_ADDRESS,
       SMC_BUILD_NAME,
       web3
     );
     const contract_service = new ContractService(web3, contract);
-    const temperatures = await contract_service.getTemperatures();
-    const humidities = await contract_service.getHumidities();
+
+    const temperatures = await contract_service.getTemperatures(
+      fermentation_id
+    );
+    const humidities = await contract_service.getHumidities(fermentation_id);
 
     const json = {
       temperatures,
@@ -65,8 +80,14 @@ class DataVisualizationController {
       SMC_BUILD_NAME,
       web3
     );
+
+    // Obtaining the last fermentation
+    let fermentation = await db.getLastFermentation();
+
     const contract_service = new ContractService(web3, contract);
-    const last_measures = await contract_service.getLastMeasures();
+    const last_measures = await contract_service.getLastMeasures(
+      fermentation.id
+    );
 
     const json = {
       temperature: last_measures[0],
@@ -158,10 +179,6 @@ class DataVisualizationController {
     if (!fermentation) {
       return response.status(404).send("No fermentation found");
     }
-
-    // if (!fermentation.active) {
-    //   return response.status(204).send("asd");
-    // }
 
     return response.send(JSON.stringify(fermentation));
   }

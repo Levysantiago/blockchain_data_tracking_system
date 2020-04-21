@@ -50,8 +50,12 @@ class DataInsertionController {
 
     const contract_service = new ContractService(web3, contract);
 
+    // Obtaining the last fermentation
+    let fermentation = await db.getLastFermentation();
+
     const result = await contract_service.setTemperatureAndHumidity(
       measurements,
+      fermentation.id,
       BC_ADDRESS,
       GAS
     );
@@ -62,8 +66,7 @@ class DataInsertionController {
 
     const first_transaction = result.temperature;
     const last_transaction = result.humidity;
-    // Obtaining the last fermentation
-    let fermentation = await db.getLastFermentation();
+
     // Setting up the values got from the transactions
     fermentation.trxs += 2;
     fermentation.blockend = last_transaction.blockNumber;

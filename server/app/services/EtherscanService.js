@@ -49,6 +49,21 @@ class EtherscanService {
     return transactions;
   }
 
+  async getMeasures() {
+    // let transactions = await axios.get(
+    //   "http://api-rinkeby.etherscan.io/api?module=account&&action=txlist&address=" +
+    //     SMC_ADDRESS +
+    //     "&startblock=" +
+    //     startblock +
+    //     "&endblock=" +
+    //     endblock +
+    //     "&sort=desc&apikey=" +
+    //     ETHSCAN_KEY
+    // );
+
+    console.log(abi);
+  }
+
   async getLatestTransaction() {
     let transaction = await axios.get(
       "http://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=" +

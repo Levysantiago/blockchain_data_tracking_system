@@ -4,26 +4,26 @@ class ContractService {
     this.contract = contractInstance;
   }
 
-  async setTemperature(temperature, from, gas) {
+  async setTemperature(temperature, fermentation_id, from, gas) {
     await this.contract.methods
-      .setTemperature(temperature)
+      .setTemperature(temperature, fermentation_id)
       .send({ from: from, gas: gas });
   }
 
-  async setHumidity(humidity, from, gas) {
+  async setHumidity(humidity, fermentation_id, from, gas) {
     await this.contract.methods
-      .setHumidity(humidity)
+      .setHumidity(humidity, fermentation_id)
       .send({ from: from, gas: gas });
   }
 
-  async setTemperatureAndHumidity(measures, from, gas) {
+  async setTemperatureAndHumidity(measures, fermentation_id, from, gas) {
     if (measures.length > 1) {
       let results = {};
       results.temperature = await this.contract.methods
-        .setTemperature(measures[0])
+        .setTemperature(measures[0], fermentation_id)
         .send({ from: from, gas: gas });
       results.humidity = await this.contract.methods
-        .setHumidity(measures[1])
+        .setHumidity(measures[1], fermentation_id)
         .send({ from: from, gas: gas });
 
       return results;
@@ -31,18 +31,24 @@ class ContractService {
     return false;
   }
 
-  async getTemperatures() {
-    const temperatures = await this.contract.methods.getTemperatures().call();
+  async getTemperatures(fermentation_id) {
+    const temperatures = await this.contract.methods
+      .getTemperatures(fermentation_id)
+      .call();
     return temperatures;
   }
 
-  async getHumidities() {
-    const humidities = await this.contract.methods.getHumidities().call();
+  async getHumidities(fermentation_id) {
+    const humidities = await this.contract.methods
+      .getHumidities(fermentation_id)
+      .call();
     return humidities;
   }
 
-  async getLastMeasures() {
-    const last_measures = await this.contract.methods.getLastValues().call();
+  async getLastMeasures(fermentation_id) {
+    const last_measures = await this.contract.methods
+      .getLastValues(fermentation_id)
+      .call();
     return last_measures;
   }
 }
