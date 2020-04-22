@@ -32,7 +32,7 @@ class Transactions extends Component {
 
     if ((await response.status) === 200) {
       const json = await response.json();
-      this.setState({ transactions: json });
+      this.setState({ transactions: json.data });
     }
   }
 
@@ -43,8 +43,7 @@ class Transactions extends Component {
     if ((await response.status) === 200) {
       this.setState({ loader: false });
       const json = await response.json();
-      this.setState({ fermentations: json });
-      //console.log(this.state.fermentations);
+      this.setState({ fermentations: json.data });
     }
   }
 
@@ -85,10 +84,10 @@ class Transactions extends Component {
         const measures = await response.json();
         const graphic_info = this.state.graphic_info;
 
-        graphic_info.tlabels = measures.temperatures;
-        graphic_info.temperatures = measures.temperatures;
-        graphic_info.hlabels = measures.humidities;
-        graphic_info.humidities = measures.humidities;
+        graphic_info.tlabels = measures.data.temperatures;
+        graphic_info.temperatures = measures.data.temperatures;
+        graphic_info.hlabels = measures.data.humidities;
+        graphic_info.humidities = measures.data.humidities;
 
         this.setState({ graphic_info: graphic_info });
       }

@@ -8,58 +8,65 @@ const {
 const server_url = SERVER_HOST + ":" + SERVER_PORT;
 const client_url = CLIENT_HOST + ":" + CLIENT_PORT;
 
+const json = {
+  idm: "lif-gateway",
+  idapp: "iot-cocoa"
+};
+
 const get_data_service = {
   external_route: id => {
     return client_url + "/external/transactions/" + id;
   },
 
   getTransactions: async () => {
-    let json = {
-      idm: "id",
-      idt: "0000000000000000",
-      type: "R",
-      timestamp: "1519746632"
-    };
-    let response = await fetch(server_url + "/getTransactions", {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(json)
-    });
-
-    return response;
-  },
-
-  getTransactionsByFermentation: async id => {
-    let json = {
-      ids: "id",
-      sensorname: "DHT11",
-      fermentation_id: id
-    };
-    let response = await fetch(server_url + "/getTransactions/id", {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(json)
-    });
-
-    return response;
-  },
-
-  getLastMeasures: async () => {
-    let response = await fetch(server_url + "/getLastMeasures", {
+    let response = await fetch(server_url + "/", {
       method: "post",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        ids: "id",
-        sensorname: "DHT11"
+        ...json,
+        type: "r",
+        route: "/transactions"
+      })
+    });
+
+    return response;
+  },
+
+  getTransactionsByFermentation: async id => {
+    let response = await fetch(server_url + "/", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        ...json,
+        type: "r",
+        route: "/transactions/" + id
+      })
+    });
+
+    return response;
+  },
+
+  getLastMeasures: async () => {
+    let response = await fetch(server_url + "/", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        ...json,
+        type: "r",
+        route: "/measures",
+        headers: {
+          ids: "id",
+          sensorname: "DHT11"
+        }
       })
     });
 
@@ -67,16 +74,20 @@ const get_data_service = {
   },
 
   getMeasures: async fermentation_id => {
-    let response = await fetch(server_url + "/getMeasures", {
+    let response = await fetch(server_url + "/", {
       method: "post",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        ids: "id",
-        sensorname: "DHT11",
-        fermentation_id: fermentation_id
+        ...json,
+        type: "r",
+        route: "/measures/" + fermentation_id,
+        headers: {
+          ids: "id",
+          sensorname: "DHT11"
+        }
       })
     });
 
@@ -84,24 +95,34 @@ const get_data_service = {
   },
 
   getFermentations: async () => {
-    let response = await fetch(server_url + "/fermentations", {
-      method: "get",
+    let response = await fetch(server_url + "/", {
+      method: "post",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
-      }
+      },
+      body: JSON.stringify({
+        ...json,
+        type: "r",
+        route: "/fermentations"
+      })
     });
 
     return response;
   },
 
   getFermentation: async () => {
-    let response = await fetch(server_url + "/fermentation", {
-      method: "get",
+    let response = await fetch(server_url + "/", {
+      method: "post",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
-      }
+      },
+      body: JSON.stringify({
+        ...json,
+        type: "r",
+        route: "/fermentation"
+      })
     });
 
     return response;

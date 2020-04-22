@@ -1,6 +1,7 @@
 const Database = use("Database");
 require("dotenv").config();
 const { TABLE_NAME } = process.env;
+const helpers = use("App/lib/helpers");
 
 module.exports = {
   selectFermentations: async () => {
@@ -19,8 +20,8 @@ module.exports = {
         blockstart: blockstart,
         blockend: blockend,
         timestamp: timestamp,
-        created_at: new Date().getTime(),
-        updated_at: new Date().getTime()
+        created_at: helpers.getTimestamp(),
+        updated_at: helpers.getTimestamp()
       });
 
       return true;
@@ -45,7 +46,7 @@ module.exports = {
           blockstart: blockstart,
           blockend: blockend,
           timestamp: timestamp,
-          updated_at: new Date().getTime()
+          updated_at: helpers.getTimestamp()
         });
 
       return true;

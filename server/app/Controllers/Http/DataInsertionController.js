@@ -72,8 +72,8 @@ class DataInsertionController {
   }
   */
   async activateFermentation({ request, response }) {
-    const json = request.params;
-    json.activate = json.activate == "true";
+    const json = request.post();
+
     if (json.activate) {
       // Inserting in the database
       let res = db.insertFermentation();

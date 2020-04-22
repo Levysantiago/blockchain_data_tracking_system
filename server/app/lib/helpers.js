@@ -12,5 +12,8 @@ module.exports = {
     }
 
     return true;
+  },
+  getTimestamp: () => {
+    return new Date().getTime();
   }
 };

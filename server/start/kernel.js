@@ -39,6 +39,7 @@ const namedMiddleware = {
   contract_provider: "App/Middleware/ContractProvider",
   ethservice_provider: "App/Middleware/EthServiceProvider",
   fermentation_provider: "App/Middleware/FermentationProvider",
+  gateway_provider: "App/Middleware/GatewayProvider",
   guest: "Adonis/Middleware/AllowGuestOnly"
 };
 

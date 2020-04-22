@@ -19,12 +19,12 @@ class FermentationProvider {
         fermentation_id: "required|integer"
       };
 
-      const valid = await helpers.validate(request.all(), rules);
+      const valid = await helpers.validate(request.params, rules);
       if (!valid) {
         return response.send(400);
       }
 
-      const { fermentation_id } = request.all();
+      const { fermentation_id } = request.params;
 
       const is_id_valid = await db.isValidId(fermentation_id);
       if (!is_id_valid) {

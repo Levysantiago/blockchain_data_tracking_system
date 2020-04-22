@@ -16,44 +16,17 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use("Route");
 
-// SET MEASUREMENT
-Route.post("/setMeasures", "DataInsertionController.setMeasurement").middleware(
-  ["contract_provider", "fermentation_provider:last"]
-);
-
-// GET MEASUREMENT
-Route.post(
-  "/getMeasures",
-  "DataVisualizationController.getMeasurement"
-).middleware(["contract_provider", "fermentation_provider:id"]);
-
-// GET TRANSACTIONS
-Route.post(
-  "/getTransactions",
-  "DataVisualizationController.getTransactions"
-).middleware(["contract_provider", "ethservice_provider"]);
-
-// GET TRANSACTIONS BY FERMENTATION
-Route.post(
-  "/getTransactions/id",
-  "DataVisualizationController.getTransactionsByFermentation"
-).middleware([
-  "contract_provider",
-  "ethservice_provider",
-  "fermentation_provider:id,specific"
-]);
-
-// GET LAST MEASUREMENT
-Route.post(
-  "/getLastMeasures",
-  "DataVisualizationController.getLastMeasurement"
-).middleware(["contract_provider", "fermentation_provider:last"]);
+// GATEWAY
+Route.post("/", "GatewayController.index").middleware(["gateway_provider"]);
 
 // ACTIVATE FERMENTATION
+Route.post("/fermentation", "DataInsertionController.activateFermentation");
+
+// GET FERMENTATION
 Route.get(
-  "/fermentation/:activate",
-  "DataInsertionController.activateFermentation"
-);
+  "/fermentation",
+  "DataVisualizationController.getFermentation"
+).middleware(["fermentation_provider:last"]);
 
 // GET FERMENTATIONS
 Route.get(
@@ -61,14 +34,36 @@ Route.get(
   "DataVisualizationController.getFermentations"
 ).middleware(["fermentation_provider:list"]);
 
-// GET LAST TRANSACTION
-Route.get(
-  "/getLatestTransaction",
-  "DataVisualizationController.getLatestTransaction"
-).middleware(["ethservice_provider"]);
+// SET MEASUREMENT
+Route.post("/measures", "DataInsertionController.setMeasurement").middleware([
+  "contract_provider",
+  "fermentation_provider:last"
+]);
 
-// GET FERMENTATION
+// GET MEASUREMENT
 Route.get(
-  "/fermentation",
-  "DataVisualizationController.getFermentation"
-).middleware(["fermentation_provider:last"]);
+  "/measures/:fermentation_id",
+  "DataVisualizationController.getMeasurement"
+).middleware(["contract_provider", "fermentation_provider:id"]);
+
+// GET LAST MEASUREMENT
+Route.get(
+  "/measures",
+  "DataVisualizationController.getLastMeasurement"
+).middleware(["contract_provider", "fermentation_provider:last"]);
+
+// GET TRANSACTIONS
+Route.get(
+  "/transactions",
+  "DataVisualizationController.getTransactions"
+).middleware(["contract_provider", "ethservice_provider"]);
+
+// GET TRANSACTIONS BY FERMENTATION
+Route.get(
+  "/transactions/:fermentation_id",
+  "DataVisualizationController.getTransactionsByFermentation"
+).middleware([
+  "contract_provider",
+  "ethservice_provider",
+  "fermentation_provider:id,specific"
+]);

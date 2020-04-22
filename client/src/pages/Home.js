@@ -22,8 +22,8 @@ class App extends Component {
     if ((await response.status) === 200) {
       this.setState({ loader: false });
       const json = await response.json();
-      this.setState({ temperature: json.temperature + "ºC" });
-      this.setState({ humidity: json.humidity + "%" });
+      this.setState({ temperature: json.data.temperature + "ºC" });
+      this.setState({ humidity: json.data.humidity + "%" });
     }
   }
 
@@ -34,8 +34,7 @@ class App extends Component {
     if ((await response.status) === 200) {
       this.setState({ loader: false });
       const json = await response.json();
-      this.setState({ transactions: json });
-      console.log(this.state.transactions);
+      this.setState({ transactions: json.data });
     }
   }
 

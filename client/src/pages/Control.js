@@ -35,8 +35,8 @@ class Control extends Component {
 
     // If fermentation is active
     if (response.status === 200) {
-      const json = await response.json();
-      //console.log(json);
+      let json = await response.json();
+      json = json.data;
 
       this.setState({ fermentation_id: json.id });
 
@@ -83,10 +83,10 @@ class Control extends Component {
         const measures = await response.json();
         const graphic_info = this.state.graphic_info;
 
-        graphic_info.tlabels = measures.temperatures;
-        graphic_info.temperatures = measures.temperatures;
-        graphic_info.hlabels = measures.humidities;
-        graphic_info.humidities = measures.humidities;
+        graphic_info.tlabels = measures.data.temperatures;
+        graphic_info.temperatures = measures.data.temperatures;
+        graphic_info.hlabels = measures.data.humidities;
+        graphic_info.humidities = measures.data.humidities;
 
         this.setState({ graphic_info: graphic_info });
       }
@@ -96,6 +96,17 @@ class Control extends Component {
   handleNewFermentation = async () => {
     this.setState({ loader: true, activate_button: false });
     const response = await setapi.setActivateFermentation(!this.state.active);
+
+    // Reseting panel control info
+    this.setState({
+      panel_info: {
+        id: 0,
+        trxs: 0,
+        date: "...",
+        start: "...",
+        warning: ""
+      }
+    });
 
     if (response.status === 200) {
       if (this.state.active) {

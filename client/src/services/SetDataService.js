@@ -7,14 +7,27 @@ const {
 
 const server_url = SERVER_HOST + ":" + SERVER_PORT;
 
+const json = {
+  idm: "lif-gateway",
+  idapp: "iot-cocoa"
+};
+
 const set_data_service = {
   setActivateFermentation: async bol_value => {
-    const response = await fetch(server_url + "/fermentation/" + bol_value, {
-      method: "get",
+    const response = await fetch(server_url + "/", {
+      method: "post",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
-      }
+      },
+      body: JSON.stringify({
+        ...json,
+        type: "w",
+        route: "/fermentation",
+        body: {
+          activate: bol_value
+        }
+      })
     });
 
     return response;
