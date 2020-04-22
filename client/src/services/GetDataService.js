@@ -1,3 +1,4 @@
+const helpers = require("../lib/helpers");
 require("dotenv").config();
 const {
   REACT_APP_SERVER_HOST: SERVER_HOST,
@@ -28,7 +29,8 @@ const get_data_service = {
       body: JSON.stringify({
         ...json,
         type: "r",
-        route: "/transactions"
+        route: "/transactions",
+        timestamp: helpers.getTimestamp()
       })
     });
 
@@ -45,7 +47,8 @@ const get_data_service = {
       body: JSON.stringify({
         ...json,
         type: "r",
-        route: "/transactions/" + id
+        route: "/transactions/" + id,
+        timestamp: helpers.getTimestamp()
       })
     });
 
@@ -63,6 +66,7 @@ const get_data_service = {
         ...json,
         type: "r",
         route: "/measures",
+        timestamp: helpers.getTimestamp(),
         headers: {
           ids: "id",
           sensorname: "DHT11"
@@ -84,6 +88,7 @@ const get_data_service = {
         ...json,
         type: "r",
         route: "/measures/" + fermentation_id,
+        timestamp: helpers.getTimestamp(),
         headers: {
           ids: "id",
           sensorname: "DHT11"
@@ -104,7 +109,8 @@ const get_data_service = {
       body: JSON.stringify({
         ...json,
         type: "r",
-        route: "/fermentations"
+        route: "/fermentations",
+        timestamp: helpers.getTimestamp()
       })
     });
 
@@ -121,7 +127,8 @@ const get_data_service = {
       body: JSON.stringify({
         ...json,
         type: "r",
-        route: "/fermentation"
+        route: "/fermentation",
+        timestamp: helpers.getTimestamp()
       })
     });
 

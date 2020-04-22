@@ -1,3 +1,4 @@
+const helpers = require("../lib/helpers");
 require("dotenv").config();
 
 const {
@@ -24,6 +25,7 @@ const set_data_service = {
         ...json,
         type: "w",
         route: "/fermentation",
+        timestamp: helpers.getTimestamp(),
         body: {
           activate: bol_value
         }
