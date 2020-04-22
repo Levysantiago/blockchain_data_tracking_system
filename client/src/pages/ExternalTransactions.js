@@ -14,7 +14,8 @@ class ExternalTransactions extends Component {
     this.setState({ loader: true });
     let response = await api.getFermentations();
     if ((await response.status) === 200) {
-      const fermentations = await response.json();
+      let fermentations = await response.json();
+      fermentations = fermentations.data;
 
       const size = fermentations.length;
       if (size && fermentations[list_id]) {
@@ -24,7 +25,7 @@ class ExternalTransactions extends Component {
 
         if ((await response.status) === 200) {
           const json = await response.json();
-          this.setState({ transactions: json });
+          this.setState({ transactions: json.data });
         }
       }
     }
